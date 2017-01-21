@@ -4,11 +4,10 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 app.use(express.static('public'));
-app.listen(process.env.PORT || 8080);
 const {DATABASE_URL, PORT} = require('./config');
 
 
-
+mongoose.Promise = global.Promise;
 
 // server scripts
 let server;

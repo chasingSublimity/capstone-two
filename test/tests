@@ -1,0 +1,32 @@
+/* jshint esversion: 6 */
+/* jshint expr: true */
+
+// imports
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const faker = require('faker');
+const mongoose = require('mongoose');
+
+const should = chai.should();
+const {TEST_DATABASE_URL} = require('../config');
+
+describe('Setlist Generator', function() {
+	
+	// hook functions
+	before(function() {
+		return runServer(TEST_DATABASE_URL);
+	});
+
+  beforeEach(function() {
+    return seedBlogPostData();
+  });
+
+	afterEach(function() {
+		return tearDownDb();
+	});
+
+	after(function() {
+		return closeServer();
+	});
+
+});

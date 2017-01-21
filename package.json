@@ -1,0 +1,23 @@
+{
+  "name": "capstone_2",
+  "version": "1.0.0",
+  "description": "thinkful backend capstone -- setlist utility",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chasingSublimity/capstone-two.git"
+  },
+  "author": "chasingSublimity",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chasingSublimity/capstone-two/issues"
+  },
+  "homepage": "https://github.com/chasingSublimity/capstone-two#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}

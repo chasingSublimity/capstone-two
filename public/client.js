@@ -59,3 +59,27 @@ var MOCK_SETLIST = {
 		}
 	]
 };
+
+function getSetlist(callbackFn) {
+	setTimeout(function() {
+		callbackFn(MOCK_SETLIST);
+	});
+}
+
+function displaySetlist(data) {
+	data.tracks.forEach(
+		function(track) {
+			$('body').append(
+				'<p>' + track.trackName + '<p>'
+			);
+		}
+	);
+}
+
+function getAndDisplaySetlist() {
+	getSetlist(displaySetlist);
+}
+
+$(function() {
+	getAndDisplaySetlist();
+});

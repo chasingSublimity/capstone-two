@@ -75,12 +75,14 @@ function getSetlist(callbackFn) {
 }
 
 // UPDATE setlist
+function updateSetList(callbackFn) {
+	
+}
 
 // DELETE setlist
 
 
 // functions to render state
-
 
 function displaySetlist(data) {
 	data.tracks.forEach(
@@ -96,11 +98,6 @@ function displaySetlist(data) {
 function getAndDisplaySetlist() {
 	getSetlist(displaySetlist);
 }
-
-
-
-
-
 
 $(function() {
 	getAndDisplaySetlist();

@@ -1,3 +1,6 @@
+// functions to set state with API data
+
+// mock data to sub as API data
 var MOCK_SETLIST = {
 	setlistStyle: "Dancer",
 	setLength: 5,
@@ -29,7 +32,7 @@ var MOCK_SETLIST = {
 			trackName: "Sing, Sing, Sing",
 			timeSignature: 4,
 			bpm: 130,
-			key: "F#",
+			key: "F#m",
 			valence: 0.86,
 			danceability: 0.99,
 			acousticness: 0.0,
@@ -40,7 +43,7 @@ var MOCK_SETLIST = {
 			trackName: "Cute without the E -- Acoustic",
 			timeSignature: 4,
 			bpm: 100,
-			key: "A",
+			key: "Am",
 			valence: 0.21,
 			danceability: 0.1,
 			acousticness: 0.86,
@@ -60,17 +63,31 @@ var MOCK_SETLIST = {
 	]
 };
 
+// functions to modify state
+
+// Create new setlist
+
+// GET existing setlist from DP
 function getSetlist(callbackFn) {
 	setTimeout(function() {
 		callbackFn(MOCK_SETLIST);
 	});
 }
 
+// UPDATE setlist
+
+// DELETE setlist
+
+
+// functions to render state
+
+
 function displaySetlist(data) {
 	data.tracks.forEach(
 		function(track) {
 			$('body').append(
-				'<p>' + track.trackName + '<p>'
+				'<p>' + '<b>' + track.trackName + '</b>' + ' -- ' +
+				track.bpm + ' || ' + track.key + ' || ' + track.timeSignature + '<p>'
 			);
 		}
 	);
@@ -79,6 +96,11 @@ function displaySetlist(data) {
 function getAndDisplaySetlist() {
 	getSetlist(displaySetlist);
 }
+
+
+
+
+
 
 $(function() {
 	getAndDisplaySetlist();

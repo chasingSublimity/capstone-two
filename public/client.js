@@ -85,20 +85,39 @@ function updateSetList(callbackFn) {
 // functions to render state
 
 function displaySetlist(data) {
-	data.tracks.forEach(
+	var tracksHtml = data.tracks.map(
 		function(track) {
-			$('body').append(
-				'<p>' + '<b>' + track.trackName + '</b>' + ' -- ' +
-				track.bpm + ' || ' + track.key + ' || ' + track.timeSignature + '<p>'
-			);
+			return '<p>' + '<b>' + track.trackName + '</b>' + ' -- ' + 
+			track.bpm + ' || ' + track.key + ' || ' + track.timeSignature + '<p>';
 		}
 	);
+	$('body').append(tracksHtml);
 }
 
 function getAndDisplaySetlist() {
 	getSetlist(displaySetlist);
 }
 
+// event listeners
+function watchCreateSetlist() {
+
+}
+
+function watchShowSetlist() {
+
+}
+
+function watchUpdateSetlist() {
+
+}
+
+function watchDeleteSetlist() {
+
+}
+
 $(function() {
-	getAndDisplaySetlist();
+	watchCreateSetlist();
+	watchShowSetlist();
+	watchUpdateSetlist();
+	watchDeleteSetlist();
 });

@@ -1,0 +1,35 @@
+* {
+	font-family: "Roboto", sans-serif;
+	border-radius: 7px;
+}
+
+html {
+	background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(background.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 100%
+}
+
+body {
+	height: 100%
+}
+
+main {
+	position: relative;
+	height: 100%;
+}
+
+.button-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+button {
+	min-width: 120px;
+	margin-bottom: 10px;
+}
+

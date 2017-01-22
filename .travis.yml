@@ -2,10 +2,10 @@ language: node_js
 node_js: node
 services:
 - mongodb
-deploy: powerful-earth-11452
+deploy: 
   provider: heroku
   api_key:
     secure: Rx0/bn7it1loztOS6Y3poSP1yflcjkAQ1yT5XMG1Ux5JtGNtk6bar9tQlQz4AKK2t+oNKzxwSi/VSKaZyPhzhxBbgB+Hd+/FT3WkinzvVMqMFfCvQbQnkpc7dWKlM8j1nfKpGa3OR5mr1gmksYe2nM4WAXQX85OeKYCkgIvIUiQAITQfw1KaOrHBWaWri+lm1FX+xkSlEHTM1L+krrOKzzCJxqNKvq0REHQDi+axQEN/boctub4qcBWxQkmbfLGFxdAyMNhVt0F7xmZFQNxZbY4klEMuCRlOm0Q1pBDymhjJCwI3ht14XOStcFvBa4dStsiSOVzXN1xZ02sWMIEObyvi674opNYRizaO+WUlv+hujwZwbGEUkC2bTI2GRS0NQLei88sAFXUFIixp+7rU978u5gLYa3TMCtkl6iXSk07y1gado5n+r9UPhqm9sVUhZc6X2Rerc7TJcgTO3txLav82prqLZ+NGiRDoS34aui+C0QDPIFwpOU6Cf3n0+jmqNfYd8Nij5bu2vr7Y1xOqEUfbZSQFqn+PVISGGDYo9fieq7RNgMOqrRQJrlidOUscfFnxppXASuxE9EfHenSDU4OsV7CGb4AdfFPiAZiQUKUxzP12rHKdUabyQCwGUF/wRNPtxdSbzRo5oyiW6k2JJHhweNF0KhWJ3pNuycb/SDg=
-  app: capstone-two
+  app: powerful-earth-11452
   on:
     repo: chasingSublimity/capstone-two

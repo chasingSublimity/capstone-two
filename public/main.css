@@ -21,6 +21,12 @@ main {
 	height: 100%;
 }
 
+input {
+	display: inline;
+	width: 25px;
+	display: none;
+}
+
 .button-div {
   position: absolute;
   top: 50%;

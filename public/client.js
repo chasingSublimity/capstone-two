@@ -84,19 +84,19 @@ function updateSetList(callbackFn) {
 // functions to render state
 
 // append html wrapped track data to modal
-function appendSetlist(data) {
+function stageSetlist(data) {
 	var tracksHtml = data.tracks.map(
 		function(track) {
-			return '<p>' + '<b>' + track.trackName + '</b>' + ' -- ' + 
+			// inputs are by default hidden
+			return '<p>' + '<input> ' + '<b>' + track.setPosition + ') ' + track.trackName + '</b>' + ' -- ' + 
 			track.bpm + ' || ' + track.key + ' || ' + track.timeSignature + '</p>';
 		}
 	);
-	$('.modal').append(tracksHtml);
+	$('.modal-content').append(tracksHtml);
 }
 
-function getAndAppendSetlist() {
-	getSetlist(appendSetlist);
-
+function getAndStageSetlist() {
+	getSetlist(stageSetlist);
 }
 
 // fade in modal containing set info
@@ -119,12 +119,22 @@ function watchCreateSetlist() {
 
 function watchShowSetlist() {
 	$('.js-show-button').click(function() {
-		getAndAppendSetlist();
-		fadeInModal();
+		// conditional logic to be implemented
+		// if (state.tracks.length <= 1) {
+			getAndStageSetlist();
+			fadeInModal();
+		// } else {
+		// 	fadeInModal();
+		// }
 	});
 }
 
 function watchUpdateSetlist() {
+	// need error handling for empty state
+	$('.js-update-button').click(function() {
+		$('input').show();
+		fadeInModal();
+	});
 
 }
 

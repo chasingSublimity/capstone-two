@@ -82,21 +82,39 @@ function updateSetList(callbackFn) {
 // DELETE setlist
 
 
+
+
+
 // functions to render state
 
-function displaySetlist(data) {
+// append html wrapped track data to modal
+function appendSetlist(data) {
 	var tracksHtml = data.tracks.map(
 		function(track) {
 			return '<p>' + '<b>' + track.trackName + '</b>' + ' -- ' + 
-			track.bpm + ' || ' + track.key + ' || ' + track.timeSignature + '<p>';
+			track.bpm + ' || ' + track.key + ' || ' + track.timeSignature + '</p>';
 		}
 	);
-	$('body').append(tracksHtml);
+	$('.modal').append(tracksHtml);
 }
 
-function getAndDisplaySetlist() {
-	getSetlist(displaySetlist);
+function getAndAppendSetlist() {
+	getSetlist(appendSetlist);
+
 }
+
+// fade in modal containing set info
+function fadeInModal() {
+	// fade in modal
+		$('.overlay').fadeIn(1000);
+	// fadeout modal if esc key is pressed
+	$(document).keydown(function(e){
+		if (e.keyCode === 27) {
+  		$(".overlay").fadeOut(1000);
+		}
+  });
+}
+
 
 // event listeners
 function watchCreateSetlist() {
@@ -104,7 +122,10 @@ function watchCreateSetlist() {
 }
 
 function watchShowSetlist() {
-
+	$('.js-show-button').click(function() {
+		getAndAppendSetlist();
+		fadeInModal();
+	});
 }
 
 function watchUpdateSetlist() {

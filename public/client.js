@@ -65,7 +65,14 @@ var state = {
 
 // functions to modify state
 
+// orders songs by ascending trackNumbers
+function sortSetlist(songA, songB) {
+  return a.setPosition - b.setPosition;
+}
+
 // Create new setlist
+
+// CRUD operations
 
 // GET existing setlist from DB
 function getSetlist(callbackFn) {
@@ -100,7 +107,7 @@ function getAndStageSetlist() {
 }
 
 // fade in modal containing set info
-function fadeInModal() {
+function handleModal() {
 	// fade in modal
 		$('.overlay').fadeIn(1000);
 	// fadeout modal if esc key is pressed
@@ -123,20 +130,23 @@ function watchShowSetlist() {
 		// conditional logic to be implemented
 		// if (state.tracks.length <= 1) {
 			getAndStageSetlist();
-			fadeInModal();
+			handleModal();
 		// } else {
-		// 	fadeInModal();
+		// 	handleModal();
 		// }
 	});
 }
 
-function watchUpdateSetlist() {
+function watchUpdateSetlist(setlist) {
 	// need error handling for empty state
-	// need update implementation
 	$('.js-update-button').click(function() {
 		$('input').show();
-		fadeInModal();
+		handleModal();
 	});
+	// update setOrder
+
+	// 
+	return setlist.sort(sortSetlist);
 
 }
 

@@ -4,11 +4,12 @@
 // imports
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const mongoose = require('mognoose');
 
 const should = chai.should();
 
 // const {SetList} = require('../models');
-const {app} = require('../server');
+const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
 
 chai.use(chaiHttp);

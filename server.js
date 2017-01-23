@@ -1,11 +1,14 @@
 /* jshint esversion: 6 */
 
-// imports
+// dependencies
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const {DATABASE_URL, PORT} = require('./config');
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
+// imports
+const {DATABASE_URL, PORT} = require('./config');
+const {Setlist} = require('./models');
+
 
 const app = express();
 mongoose.Promise = global.Promise;
@@ -15,6 +18,12 @@ mongoose.Promise = global.Promise;
 app.use(express.static('public'));
 app.use(morgan('common'));
 app.use(bodyParser.json());
+
+// GET
+app.get('/setlist', (req, res) => {
+  Set
+});
+
 
 
 // server scripts

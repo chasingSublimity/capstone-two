@@ -10,10 +10,10 @@ const setlistSchema = mongoose.Schema({
 		timeSignature: Number,
 		bpm: Number,
 		key: String,
-		valence: {Number, min: 0, max: 1},
-		danceability: {Number, min: 0, max: 1},
-		acousticness: {Number, min: 0, max: 1},
-		energy: {Number, min: 0, max: 1}
+		valence: {type: Number, min: 0, max: 1},
+		danceability: {type: Number, min: 0, max: 1},
+		acousticness: {type: Number, min: 0, max: 1},
+		energy: {type: Number, min: 0, max: 1}
 	}]
 });
 

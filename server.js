@@ -1,13 +1,21 @@
 /* jshint esversion: 6 */
 
-var express = require('express');
-var app = express();
-var mongoose = require('mongoose');
-app.use(express.static('public'));
+// imports
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const {DATABASE_URL, PORT} = require('./config');
+const morgan = require('morgan');
 
-
+const app = express();
 mongoose.Promise = global.Promise;
+
+
+// middleware
+app.use(express.static('public'));
+app.use(morgan('common'));
+app.use(bodyParser.json());
+
 
 // server scripts
 let server;

@@ -67,7 +67,7 @@ var state = {
 
 // orders songs by ascending trackNumbers
 function sortSetlist(songA, songB) {
-  return a.setPosition - b.setPosition;
+  return songA.setPosition - songB.setPosition;
 }
 
 // Create new setlist
@@ -95,7 +95,7 @@ function stageSetlist(data) {
 	var tracksHtml = data.tracks.map(
 		function(track) {
 			// inputs are by default hidden
-			return '<p>' + '<input> ' + '<b>' + track.setPosition + ') ' + track.trackName + '</b>' + ' -- ' + 
+			return '<p>' + '<input class="song-' + track.setPosition + '"> ' + '<b>' + track.setPosition + ') ' + track.trackName + '</b>' + ' -- ' + 
 			track.bpm + ' || ' + track.key + ' || ' + track.timeSignature + '</p>';
 		}
 	);
@@ -162,6 +162,6 @@ function watchDeleteSetlist() {
 $(function() {
 	watchCreateSetlist();
 	watchShowSetlist();
-	watchUpdateSetlist();
+	watchUpdateSetlist(state.tracks);
 	watchDeleteSetlist();
 });

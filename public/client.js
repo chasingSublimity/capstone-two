@@ -132,12 +132,11 @@ function watchShowSetlist() {
 
 function watchUpdateSetlist() {
 	// need error handling for empty state
+	// need update implementation
 	$('.js-update-button').click(function() {
 		$('input').show();
 		fadeInModal();
 	});
-
-	// 
 
 }
 

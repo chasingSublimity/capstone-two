@@ -1,7 +1,7 @@
 // functions to set state with API data
 
 // mock data to sub as API data
-var MOCK_SETLIST = {
+var state = {
 	setlistStyle: "Dancer",
 	setLength: 5,
 	tracks: [
@@ -67,10 +67,10 @@ var MOCK_SETLIST = {
 
 // Create new setlist
 
-// GET existing setlist from DP
+// GET existing setlist from DB
 function getSetlist(callbackFn) {
 	setTimeout(function() {
-		callbackFn(MOCK_SETLIST);
+		callbackFn(state);
 	});
 }
 
@@ -80,10 +80,6 @@ function updateSetList(callbackFn) {
 }
 
 // DELETE setlist
-
-
-
-
 
 // functions to render state
 

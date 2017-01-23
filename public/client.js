@@ -115,6 +115,7 @@ function fadeInModal() {
 // event listeners
 function watchCreateSetlist() {
 
+
 }
 
 function watchShowSetlist() {
@@ -136,10 +137,17 @@ function watchUpdateSetlist() {
 		fadeInModal();
 	});
 
+	// 
+
 }
 
 function watchDeleteSetlist() {
-
+	// function to clear state
+	$('.js-delete-button').click(function() {
+		state = {};
+		$('.modal-content').html('');
+		// function to delete document from collection
+	});
 }
 
 $(function() {

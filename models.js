@@ -38,7 +38,6 @@ setlistSchema.methods.apiRepr = function() {
 	};
 };
 
-const Song = mongoose.model('Setlist', songSchema);
 const Setlist = mongoose.model('Setlist', setlistSchema);
 
 module.exports = {Setlist};

@@ -4,7 +4,7 @@
 // imports
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const mongoose = require('mognoose');
+const mongoose = require('mongoose');
 
 const should = chai.should();
 

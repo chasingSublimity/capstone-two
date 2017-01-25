@@ -1,6 +1,6 @@
 /* Responsive Grid */
 
-* {
+body {
   box-sizing: border-box;
   max-width: 1000px;
   padding-left: 20px;

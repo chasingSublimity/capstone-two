@@ -2,8 +2,6 @@
 
 // mock data to sub as API data
 var state = {
-	setlistStyle: "Dancer",
-	setLength: 5,
 	tracks: [
 		{
 			setPosition: 1,
@@ -64,6 +62,7 @@ var state = {
 };
 
 // functions to modify state
+
 
 // orders songs by ascending trackNumbers
 function sortSetlist(songA, songB) {
@@ -145,12 +144,14 @@ function watchUpdateSetlist(setlist) {
 	});
 	// update setOrder
 
+
 	// 
 	return setlist.sort(sortSetlist);
 
 }
 
 function watchDeleteSetlist() {
+	// add confirmation notice
 	// function to clear state
 	$('.js-delete-button').click(function() {
 		state = {};

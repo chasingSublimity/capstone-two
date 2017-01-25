@@ -35,7 +35,7 @@ function watchDeleteTrack() {
 }
 
 $(function() {
-	watchAddTrack();
+	// watchAddTrack();
 	watchUpdateTrack();
 	watchDeleteTrack();
 });

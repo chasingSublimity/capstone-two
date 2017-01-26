@@ -21,40 +21,39 @@
 
 <body>
 	<main>
-    <form action="post">
-      <input type="text" class="song-title form-inputs" id="song-title" placeholder="Song Title">
-      <input type="text" class="song-key form-inputs" id="song-key" placeholder="Key">
-      <input type="number" min="1" max="350" class="song-tempo form-inputs" id="song-tempo" placeholder="BPM">
-      <br>
-      <button type="submit">Add</button>
+    <form action="" id="add-track-form">
+      <fieldset>
+        <input type="text" class="song-title form-inputs" id="title" name="song-title" placeholder="Song Title" required>
+        <input type="text" class="song-key form-inputs" id="key" name="song-key" placeholder="Key">
+        <input type="number" min="1" max="350" class="song-tempo form-inputs" id="tempo" name="song-tempo" placeholder="BPM">
+      </fieldset>
+      <button class="add-track-button" type="submit" form="add-track-form">Add</button>
     </form>
     <div class="setlist">
       <div class="tracks">
         <div>
+          <input type="image" src="red-x.jpg" alt="delete button" name="delete-button" class="delete-button">
           <p class="track"><strong>By Now - G - 147</strong></p>
-          <input type="image" src="Notepad_Plain_Red.png" alt="edit button" name="edit-button" class="edit-button"><input type="image" src="red-x.jpg" alt="delete button" name="delete-button" class="delete-button">
         </div>
         <div>
+          <input type="image" src="red-x.jpg" alt="delete-x" name="delete-button" class="delete-button">
           <p class="track"><strong>Take My Hell- Am - 147</strong></p>
-          <input type="image" src="Notepad_Plain_Red.png" alt="edit button" name="edit-button" class="edit-button"><input type="image" src="red-x.jpg" alt="delete-x" name="delete-button" class="delete-button">
         </div>
         <div>
+          <input type="image" src="red-x.jpg" alt="delete-x" name="delete-button" class="delete-button">
           <p class="track"><strong>Wait - G - 86</strong></p>
-          <input type="image" src="Notepad_Plain_Red.png" alt="edit button" name="edit-button" class="edit-button"><input type="image" src="red-x.jpg" alt="delete-x" name="delete-button" class="delete-button">
         </div>
         <div>
+          <input type="image" src="red-x.jpg" alt="delete-x" name="delete-button" class="delete-button">
           <p class="track"><strong>Things to Do - F#m - 175</strong></p>
-          <input type="image" src="Notepad_Plain_Red.png" alt="edit button" name="edit-button" class="edit-button"><input type="image" src="red-x.jpg" alt="delete-x" name="delete-button" class="delete-button">
         </div>
         <div>
-          <p class="track"><strong>By Now - G - 147</strong></p>
-          <input type="image" src="Notepad_Plain_Red.png" alt="edit button" name="edit-button" class="edit-button">
           <input type="image" src="red-x.jpg" alt="delete-x" name="delete-button" class="delete-button">
+          <p class="track"><strong>By Now - G - 147</strong></p>
         </div>
         <div>
-          <p class="track"><strong>By Now - G - 147</strong></p>
-          <input type="image" src="Notepad_Plain_Red.png" alt="edit button" name="edit-button" class="edit-button">
           <input type="image" src="red-x.jpg" alt="delete-x" name="delete-button" class="delete-button">
+          <p class="track"><strong>By Now - G - 147</strong></p>
         </div>
       </div>
     </div>

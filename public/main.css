@@ -59,6 +59,8 @@ button {
   min-width: 350px;
   height: 70%;
   margin-top: 40px;
+  padding-left: 15px;
+  padding-top: 5px;
 }
 
 .delete-button {
@@ -72,10 +74,6 @@ button {
 	width: 17px;
 	vertical-align: text-top;
 	margin-left: 5px;
-}
-
-.tracks {
-	padding-left: 15px;
 }
 
 .track {

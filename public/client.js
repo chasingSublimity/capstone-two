@@ -41,6 +41,9 @@ function watchUpdateTrack() {
 
 function watchDeleteTrack() {
 	// use .on()
+	$(document).on('click', '.delete-button', function(event) {
+		$(this).parent('div').remove();
+	});
 }
 
 $(function() {

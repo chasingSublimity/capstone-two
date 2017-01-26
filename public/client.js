@@ -6,9 +6,8 @@
 function renderTrack(song) {
 	var trackString = (
 		'<div>' +
-			'<p class="track">' + '<strong>' + song.title + ' - ' + song.key + ' - ' + song.bpm + '</strong></p>' + 
-			'<input type="image" src="Notepad_Plain_Red.png" alt="edit button" name="edit-button" class="edit-button">' + 
 			'<input type="image" src="red-x.jpg" alt="delete button" name="delete-button" class="delete-button">' +
+			'<p class="track">' + '<strong>' + song.title + ' - ' + song.key + ' - ' + song.bpm + '</strong></p>' + 
 		'</div>'
 	);
 	$('.tracks').append(trackString);

@@ -1,41 +1,50 @@
 // functions to set state with API data
 
+// render functions
 
-// GET existing setlist from DB
-
-// save setlist to DB
-
-
-// get track data from form submission
-
-// add track to UI
-function addTrack() {
-	data = prompt('Enter New Song');
-	var trackTemplate = (
-		'<p class="track"><strong>' + data + '</strong></p>'
+// render track data
+function renderTrack(song) {
+	var trackString = (
+		'<div>' +
+			'<p class="track">' + '<strong>' + song.title + ' - ' + song.key + ' - ' + song.bpm + '</strong></p>' + 
+			'<input type="image" src="Notepad_Plain_Red.png" alt="edit button" name="edit-button" class="edit-button">' + 
+			'<input type="image" src="red-x.jpg" alt="delete button" name="delete-button" class="delete-button">' +
+		'</div>'
 	);
-	$('.tracks').append(trackTemplate);
+	$('.tracks').append(trackString);
 }
-
-// delete track from DB
 
 // event listeners
 function watchAddTrack() {
-	$('.add-track').click( 
-		addTrack()
-	);
+	$('form').on('submit', function(event) {
+		event.preventDefault();
+		console.log($(this).find('#song-title').val());
+		var form = $(this);
+
+		var song = {
+			title: form.find('#title').val(),
+			key: form.find('#key').val(),
+			bpm: form.find('#tempo').val()
+		};
+
+		console.log(song);
+		// render data on page
+		renderTrack(song);
+		// send data to DB
+	});
 }
 
 function watchUpdateTrack() {
+	// use .on()
 
 }
 
 function watchDeleteTrack() {
-
+	// use .on()
 }
 
 $(function() {
-	// watchAddTrack();
+	watchAddTrack();
 	watchUpdateTrack();
 	watchDeleteTrack();
 });

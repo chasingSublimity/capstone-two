@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Setlist Utility">
+  <title>SetListr</title>
+
+  <!-- Responsive viewport tag, tells small screens that it's responsive -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Normalize.css, a cross-browser reset file -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" type="text/css" href="main.css">
+  <link rel="stylesheet" type="text/css" href="grid.css">
+</head>
+
+<body>
+	<main>
+    <form action="" id="add-track-form">
+      <fieldset>
+        <input type="text" class="song-title form-inputs" id="title" name="song-title" placeholder="Song Title" required>
+        <input type="text" class="song-key form-inputs" id="key" name="song-key" placeholder="Key">
+        <input type="number" min="1" max="350" class="song-tempo form-inputs" id="tempo" name="song-tempo" placeholder="BPM">
+      </fieldset>
+      <button class="add-track-button" type="submit" form="add-track-form">Add</button>
+    </form>
+
+    <div class="setlist" id="sortable-setlist">
+      <div class="track-item-container">
+        <input type="image" src="red-x.jpg" alt="delete button" name="delete-button" class="delete-button">
+        <p class="track"><strong>By Now - G - 147</strong></p>
+      </div>
+      <div class="track-item-container">
+        <input type="image" src="red-x.jpg" alt="delete-x" name="delete-button" class="delete-button">
+        <p class="track"><strong>Take My Hell- Am - 147</strong></p>
+      </div>
+      <div class="track-item-container">
+        <input type="image" src="red-x.jpg" alt="delete-x" name="delete-button" class="delete-button">
+        <p class="track"><strong>Wait - G - 86</strong></p>
+      </div>
+      <div class="track-item-container">
+        <input type="image" src="red-x.jpg" alt="delete-x" name="delete-button" class="delete-button">
+        <p class="track"><strong>Things to Do - F#m - 175</strong></p>
+      </div>
+      <div class="track-item-container">
+        <input type="image" src="red-x.jpg" alt="delete-x" name="delete-button" class="delete-button">
+        <p class="track"><strong>By Now - G - 147</strong></p>
+      </div>
+      <div class="track-item-container">
+        <input type="image" src="red-x.jpg" alt="delete-x" name="delete-button" class="delete-button">
+        <p class="track"><strong>By Now - G - 147</strong></p>
+      </div>
+    </div>
+	</main>
+	<script src="https://code.jquery.com/jquery.min.js"></script>
+  <script src="http://rubaxa.github.io/Sortable/Sortable.js"></script>
+	<script src="client.js"></script>
+</body>
+</html>

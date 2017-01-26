@@ -34,15 +34,20 @@ function watchAddTrack() {
 }
 
 function watchUpdateTrack() {
-	// use .on()
+	// update on ui using sortable library
+	var element = document.getElementById('sortable-setlist');
+	Sortable.create(element);
 
+	// update on DB
 }
 
 function watchDeleteTrack() {
-	// use .on()
+	// delete from UI
 	$(document).on('click', '.delete-button', function(event) {
 		$(this).parent('div').remove();
 	});
+
+	// delete from DB
 }
 
 $(function() {

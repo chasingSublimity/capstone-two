@@ -21,9 +21,26 @@ app.use(bodyParser.json());
 
 // GET
 app.get('/setlist', (req, res) => {
-  Set
+  // send back setlist
+  Setlist
+    .find()
+    .exec()
+    .then(response => {
+      res.json(response);
+      })
+    .catch(
+      err => {
+        console.error(err);
+        res.status(500).json({message: 'Internal Server Error'});
+    });
 });
 
+
+// Post
+
+// Delete
+
+// Delete
 
 
 // server scripts

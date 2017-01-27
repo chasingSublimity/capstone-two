@@ -18,7 +18,6 @@ function renderTrack(song) {
 function watchAddTrack() {
 	$('form').on('submit', function(event) {
 		event.preventDefault();
-		console.log($(this).find('#song-title').val());
 		var form = $(this);
 		var song = {
 			title: form.find('#title').val(),

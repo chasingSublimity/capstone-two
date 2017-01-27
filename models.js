@@ -10,10 +10,6 @@ const setlistSchema = mongoose.Schema({
 		timeSignature: Number,
 		bpm: Number,
 		key: String,
-		valence: {type: Number, min: 0, max: 1},
-		danceability: {type: Number, min: 0, max: 1},
-		acousticness: {type: Number, min: 0, max: 1},
-		energy: {type: Number, min: 0, max: 1}
 	}]
 });
 
@@ -30,10 +26,6 @@ setlistSchema.methods.apiRepr = function() {
 			timeSignature: this.timeSignature,
 			bpm: this.bpm,
 			key: this.key,
-			valence: this.valence,
-			danceability: this.danceability,
-			acousticness: this.acousticness,
-			energy: this.energy
 		}]
 	};
 };

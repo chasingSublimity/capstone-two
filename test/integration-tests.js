@@ -26,4 +26,17 @@ describe('Setlist Generator', function() {
 				});
 		});
 	});
+
+	describe('GET requests to /setlist', function() {
+		it('should return a json object with an array of strings representing track information', function() {
+			return chai.request(app)
+				.get('/setlist')
+				.then(function(res) {
+					res.should.have.status(200);
+					res.should.be.json;
+					res.tracks.should.be.an.array;
+				});
+		});
+	});
+
 });

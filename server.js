@@ -25,9 +25,13 @@ app.get('/setlist', (req, res) => {
   Setlist
     .find()
     .exec()
-    .then(response => {
-      res.json(response);
-      })
+    .then(setlist => {
+      res.status(200);
+      res.json({
+        tracks: setlist.map(
+          track => track.apiRepr())
+        });
+    })
     .catch(
       err => {
         console.error(err);

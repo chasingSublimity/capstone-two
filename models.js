@@ -15,19 +15,11 @@ const setlistSchema = mongoose.Schema({
 
 // virtual method to output data to be displayed
 setlistSchema.virtual('displayStringData').get(function() {
-	return `${this.setPosition} || ${this.trackName} || ${this.bpm} || ${this.key} || ${this.timeSignature}`;
+	return this.tracks.map(track => `${track.trackName} || ${track.bpm} || ${track.key} || ${track.timeSignature}`);
 });
 
 setlistSchema.methods.apiRepr = function() {
-	return {
-		tracks: [{
-			setPosition: this.setPosition,
-			trackName: this.trackName,
-			timeSignature: this.timeSignature,
-			bpm: this.bpm,
-			key: this.key,
-		}]
-	};
+	return this.displayStringData;
 };
 
 const Setlist = mongoose.model('Setlist', setlistSchema);

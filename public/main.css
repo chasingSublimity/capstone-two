@@ -70,6 +70,13 @@ button {
 	margin-right: 5px;
 }
 
+.rearrange-handle {
+  width: 17px;
+  vertical-align: text-top;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 .edit-button {
 	width: 17px;
 	vertical-align: text-top;

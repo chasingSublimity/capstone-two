@@ -5,12 +5,13 @@
 // render track data
 function renderTrack(song) {
 	var trackString = (
-		'<div>' +
-			'<input type="image" src="red-x.jpg" alt="delete button" name="delete-button" class="delete-button">' +
-			'<p class="track">' + '<strong>' + song.title + ' - ' + song.key + ' - ' + song.bpm + '</strong></p>' + 
+		'<div class="track-item-container">' +
+			'<input type="image" src="./assets/red-x.jpg" alt="delete button" name="delete-button" class="delete-button">' +
+			'<input type="image" src="./assets/handle-image.svg" alt="rearrange handle" name="rearrange-handle" class="rearrange-handle">' +
+			'<p class="track" ondblclick="this.contentEditable=true;this.focus()" contenteditable="false">' + '<strong>' + song.title + ' - ' + song.key + ' - ' + song.bpm + '</strong></p>' + 
 		'</div>'
 	);
-	$('.tracks').append(trackString);
+	$('.setlist').append(trackString);
 }
 
 // event listeners
@@ -19,24 +20,26 @@ function watchAddTrack() {
 		event.preventDefault();
 		console.log($(this).find('#song-title').val());
 		var form = $(this);
-
 		var song = {
 			title: form.find('#title').val(),
 			key: form.find('#key').val(),
 			bpm: form.find('#tempo').val()
 		};
-
-		console.log(song);
 		// render data on page
 		renderTrack(song);
 		// send data to DB
+
+		// reset UI
+		$('input').val('');
 	});
 }
 
 function watchUpdateTrack() {
 	// update on ui using sortable library
 	var element = document.getElementById('sortable-setlist');
-	Sortable.create(element);
+	Sortable.create(element, {
+		handle: '.rearrange-handle'
+	});
 
 	// update on DB
 }

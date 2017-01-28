@@ -82,10 +82,14 @@ describe('Setlist Generator', function() {
 			return chai.request(app)
 				.get('/setlist')
 				.then(function(res) {
+					console.log(res.body);
 					res.should.have.status(200);
 					res.should.be.json;
-					res.body.should.contain.an.array;
+					res.body.tracks.should.be.an.array;
 				});
 		});
 	});
+
+
 });
+

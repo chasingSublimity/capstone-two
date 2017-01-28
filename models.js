@@ -13,14 +13,14 @@ const setlistSchema = mongoose.Schema({
 	}]
 });
 
-// virtual method to output data to be displayed
-setlistSchema.virtual('displayStringData').get(function() {
-	return this.tracks.map(track => `${track.trackName} || ${track.bpm} || ${track.key} || ${track.timeSignature}`);
-});
+// // virtual method to output data to be displayed
+// setlistSchema.virtual('displayStringData').get(function() {
+// 	return this.tracks.map(track => `${track.trackName} - ${track.bpm} - ${track.key} - ${track.timeSignature}`);
+// });
 
-setlistSchema.methods.apiRepr = function() {
-	return this.displayStringData;
-};
+// setlistSchema.methods.apiRepr = function() {
+// 	return this.displayStringData;
+// };
 
 const Setlist = mongoose.model('Setlist', setlistSchema);
 

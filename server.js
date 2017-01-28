@@ -23,14 +23,12 @@ app.use(bodyParser.json());
 app.get('/setlist', (req, res) => {
   // send back setlist
   Setlist
-    .find()
+    .findOne()
     .exec()
     .then(setlist => {
+      console.log(setlist);
       res.status(200);
-      res.json({
-        tracks: setlist.map(
-          track => track.apiRepr())
-        });
+      res.json(setlist);
     })
     .catch(
       err => {

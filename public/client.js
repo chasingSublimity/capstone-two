@@ -8,6 +8,7 @@ function renderTrack(song) {
 		'<div class="track-item-container">' +
 			'<input type="image" src="./assets/red-x.jpg" alt="delete button" name="delete-button" class="delete-button">' +
 			'<input type="image" src="./assets/handle-image.svg" alt="rearrange handle" name="rearrange-handle" class="rearrange-handle">' +
+			// use span tags and regex
 			'<p class="track" ondblclick="this.contentEditable=true;this.focus()" contenteditable="false">' + '<strong>' + song.title + ' - ' + song.key + ' - ' + song.bpm + '</strong></p>' + 
 		'</div>'
 	);

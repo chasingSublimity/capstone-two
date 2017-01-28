@@ -5,16 +5,66 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongoose = require('mongoose');
+const faker = require('faker');
 
 const should = chai.should();
 
-// const {SetList} = require('../models');
+const {Setlist} = require('../models');
 const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
 
 chai.use(chaiHttp);
 
+// server config function
+function tearDownDb() {
+  console.warn('Deleting database');
+  return mongoose.connection.dropDatabase();
+}
+
+
+// Generates a random musical key for seed function
+function randomKeyGen() {
+  var keys = "ABCDEFGabcdefg";
+  var modality = "#b♮";
+  return (keys.charAt(Math.floor(Math.random() * keys.length)) + 
+  	modality.charAt(Math.floor(Math.random() * modality.length)));
+}
+
+// seeds DB with fake data
+function seedTrackData() {
+	console.info('seeding track data');
+	const seedData = {tracks: []};
+	for (let i = 1; i <= 7; i++) {
+		seedData.tracks.push({
+			setPosition: (Math.random() * 7) + 1,
+			trackName: faker.name.firstName,
+			timeSignature: (Math.random() * 16) + 1,
+			bpm: (Math.random() * 350) + 1,
+			key: randomKeyGen(),
+		});
+	}
+	return Setlist.insertMany(seedData);
+}
+
+// tests
 describe('Setlist Generator', function() {
+
+	// hooks
+	before(function() {
+		return runServer(TEST_DATABASE_URL);
+	});
+
+	beforeEach(function() {
+		return seedTrackData();
+	});
+
+	afterEach(function() {
+		return tearDownDb();
+	});
+
+	after(function() {
+		return closeServer();
+	});
 
 	describe('GET root endpoint', function() {
 		it('should return 200 status code and HTML file', function() {
@@ -34,8 +84,7 @@ describe('Setlist Generator', function() {
 				.then(function(res) {
 					res.should.have.status(200);
 					res.should.be.json;
-					res.tracks.should.be.an.array;
-					done();
+					res.should.be.an.array;
 				});
 		});
 	});

@@ -35,8 +35,8 @@ describe('Setlist Generator', function() {
 					res.should.have.status(200);
 					res.should.be.json;
 					res.tracks.should.be.an.array;
+					done();
 				});
 		});
 	});
-
 });

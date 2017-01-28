@@ -43,7 +43,6 @@ function seedTrackData() {
 			key: randomKeyGen(),
 		});
 	}
-	console.log(seedData);
 	return Setlist.insertMany(seedData);
 }
 

@@ -36,13 +36,14 @@ function seedTrackData() {
 	const seedData = {tracks: []};
 	for (let i = 1; i <= 7; i++) {
 		seedData.tracks.push({
-			setPosition: (Math.random() * 7) + 1,
-			trackName: faker.name.firstName,
-			timeSignature: (Math.random() * 16) + 1,
-			bpm: (Math.random() * 350) + 1,
+			setPosition: Math.floor(Math.random() * (7 - 1 + 1)) + 1,
+			trackName: faker.name.firstName(),
+			timeSignature: Math.floor(Math.random() * (16 - 1 + 1)) + 1,
+			bpm: Math.floor(Math.random() * (350 - 1 + 1)) + 1,
 			key: randomKeyGen(),
 		});
 	}
+	console.log(seedData);
 	return Setlist.insertMany(seedData);
 }
 
@@ -84,7 +85,7 @@ describe('Setlist Generator', function() {
 				.then(function(res) {
 					res.should.have.status(200);
 					res.should.be.json;
-					res.should.be.an.array;
+					res.body.should.contain.an.array;
 				});
 		});
 	});

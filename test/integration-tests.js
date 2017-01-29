@@ -82,10 +82,20 @@ describe('Setlist Generator', function() {
 			return chai.request(app)
 				.get('/setlist')
 				.then(function(res) {
-					console.log(res.body);
 					res.should.have.status(200);
 					res.should.be.json;
 					res.body.tracks.should.be.an.array;
+					res.body.tracks.should.have.length.of.at.least(1);
+					res.body.tracks[0].should.contain.all.keys(['setPosition', 'trackName', '_id']);
+					res.body.tracks.should.contain.instanceof(Object);
+					res.body.tracks[0].trackName.should.be.a.string;
+					res.body.tracks[0].key.should.be.a.string;
+					res.body.tracks[0].setPosition.should.be.a.number;
+					res.body.tracks[0]._id.should.be.a.number;
+					res.body.tracks[0].bpm.should.be.a.number;
+					res.body.tracks[0].timeSignature.should.be.a.number;
+					res.body.tracks[0].bpm.should.be.above(0).and.below(351);
+					res.body.tracks[0].timeSignature.should.be.above(0).and.below(17);
 				});
 		});
 	});

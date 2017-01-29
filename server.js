@@ -26,7 +26,6 @@ app.get('/setlist', (req, res) => {
     .findOne()
     .exec()
     .then(setlist => {
-      console.log(setlist);
       res.status(200);
       res.json(setlist);
     })
@@ -39,6 +38,9 @@ app.get('/setlist', (req, res) => {
 
 
 // Post
+app.get('/setlist', (req, res) => {
+  // create track based on data from client
+});
 
 // Delete
 

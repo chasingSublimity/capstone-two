@@ -100,6 +100,9 @@ describe('Setlist Generator', function() {
 		});
 	});
 
+	describe('Post requests to /setlist', function() {
+		it('should create a new set')
+	});
 
 });
 

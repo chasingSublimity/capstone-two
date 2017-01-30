@@ -3,6 +3,14 @@
 const mongoose = require('mongoose');
 
 
+const trackSchema = mongoose.Schema({
+	setPosition: Number,
+	trackName: String,
+	timeSignature: Number,
+	bpm: Number,
+	key: String,
+});
+
 const setlistSchema = mongoose.Schema({
 	tracks: [{
 		setPosition: Number,
@@ -13,14 +21,11 @@ const setlistSchema = mongoose.Schema({
 	}]
 });
 
-// // virtual method to output data to be displayed
-// setlistSchema.virtual('displayStringData').get(function() {
-// 	return this.tracks.map(track => `${track.trackName} - ${track.bpm} - ${track.key} - ${track.timeSignature}`);
-// });
-
-// setlistSchema.methods.apiRepr = function() {
-// 	return this.displayStringData;
-// };
+setlistSchema.methods.apiRepr = function() {
+	return {
+		tracks: this.tracks
+	};
+};
 
 const Setlist = mongoose.model('Setlist', setlistSchema);
 

@@ -38,8 +38,42 @@ app.get('/setlist', (req, res) => {
 
 
 // Post
-app.get('/setlist', (req, res) => {
-  // create track based on data from client
+app.post('/setlist', (req, res) => {
+  // ensure that all of the req fields have been sent from client
+  const requiredFields = ['trackName', 'setPosition'];
+  const tracksArray = req.body.tracks;
+  // loop through each required field and check to see if they are present in each track
+  requiredFields.forEach(field => {
+    tracksArray.forEach(track => {
+      if (!(field in track && track[field])) {
+        return res.status(400).json({message: `Must specify a value for ${field}`});
+      }
+    });
+  });
+  
+  function accessTrackData(tracksArray) {
+    tracksArray.forEach(track => {
+      return { 
+        setPosition: track.setPosition,
+        trackName: track.trackName,
+        timeSignature: track.timeSignature,
+        bpm: track.bpm,
+        key: track.key
+      };
+    });
+  }
+
+  // create track based on data from client and send back confirmation
+  Setlist
+    .create(accessTrackData(req.body.tracks))
+    .then(setlist => {
+      console.log(setlist);
+      res.status(201).json(setlist.apiRepr());
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({message: 'Internal server error'});
+    });
 });
 
 // Delete

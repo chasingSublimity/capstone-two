@@ -30,19 +30,26 @@ function randomKeyGen() {
   	modality.charAt(Math.floor(Math.random() * modality.length)));
 }
 
+// generates random track data
+function generateSetlistData() {
+	const setlistData = {tracks: []};
+	for (let i = 1; i <= 7; i++) {
+		setlistData.tracks.push({
+		setPosition: Math.floor(Math.random() * (7 - 1 + 1)) + 1,
+		trackName: faker.name.firstName(),
+		timeSignature: Math.floor(Math.random() * (16 - 1 + 1)) + 1,
+		bpm: Math.floor(Math.random() * (350 - 1 + 1)) + 1,
+		key: randomKeyGen(),
+		});
+	}
+	return setlistData;
+}
+
+
 // seeds DB with fake data
 function seedTrackData() {
 	console.info('seeding track data');
-	const seedData = {tracks: []};
-	for (let i = 1; i <= 7; i++) {
-		seedData.tracks.push({
-			setPosition: Math.floor(Math.random() * (7 - 1 + 1)) + 1,
-			trackName: faker.name.firstName(),
-			timeSignature: Math.floor(Math.random() * (16 - 1 + 1)) + 1,
-			bpm: Math.floor(Math.random() * (350 - 1 + 1)) + 1,
-			key: randomKeyGen(),
-		});
-	}
+	const seedData = generateSetlistData();
 	return Setlist.insertMany(seedData);
 }
 
@@ -98,6 +105,14 @@ describe('Setlist Generator', function() {
 					res.body.tracks[0].timeSignature.should.be.above(0).and.below(17);
 				});
 		});
+	});
+
+	describe('POST requests to /setlist', function() {
+		it('should create a new setlist', function() {
+			return chai.request(app)
+				.post('/setlist')
+				.then
+		})
 	});
 
 	describe('DELETE requests to /setlist/:id', function() {

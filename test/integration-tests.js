@@ -100,8 +100,24 @@ describe('Setlist Generator', function() {
 		});
 	});
 
-	describe('Post requests to /setlist', function() {
-		it('should create a new set')
+	describe('DELETE requests to /setlist/:id', function() {
+		it('should delete the specified setlist', function() {
+			let setlist;
+			return Setlist
+				.findOne()
+				.exec()
+				.then(function(_setlist) {
+					setlist = _setlist;
+					return chai.request(app).delete(`/setlist/${setlist.id}`);
+				})
+				.then(function(res) {
+					res.should.have.status(204);
+					return Setlist.findById(setlist.id);
+				})
+				.then(function(_setlist){
+					should.not.exist(_setlist);
+				});
+		});
 	});
 
 });

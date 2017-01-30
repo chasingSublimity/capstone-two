@@ -76,10 +76,25 @@ app.post('/setlist', (req, res) => {
     });
 });
 
-// Delete
+// Put
 
 // Delete
+app.delete('/setlist/:id', (req, res) => {
+  Setlist
+    .findByIdAndRemove(req.params.id)
+    .exec()
+    .then(() => res.status(204).end())
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({message: 'Internal server error'});
+    });
+});
 
+
+// catch-all 404
+app.use('*', function(req, res) {
+  res.status(404).json({message: 'Not Found'});
+});
 
 // server scripts
 let server;

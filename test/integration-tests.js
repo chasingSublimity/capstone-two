@@ -102,6 +102,7 @@ describe('Setlist Generator', function() {
 
 	describe('DELETE requests to /setlist/:id', function() {
 		it('should delete the specified setlist', function() {
+			// declare variable here so that it is accessible in all of the functions below
 			let setlist;
 			return Setlist
 				.findOne()

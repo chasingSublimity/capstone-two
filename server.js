@@ -78,12 +78,29 @@ app.post('/setlist', (req, res) => {
 
 // Put
 app.put('/setlist/:id', (req, res) => {
-  if (!(req.params.id === req.body.id)) {
+  // check that the req path id and the id in body are the same
+  if ((req.params.id !== req.body.id)) {
     const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match.`;
     console.error(message);
     res.status(400).json({message: message});
   }
   
+  const toUpdate = {};
+  const updateableFields = ['setPosition', 'trackName', 'timeSignature', 'bpm', 'key'];
+  updateableFields.forEach(field => {
+    if (field in req.body) {
+      toUpdate[field] = req.body.field;
+    }
+  });
+
+  Setlist
+    .findByIdAndUpdate(req.params.id, {$set: toUpdate})
+    .exec()
+    .then(setlist => res.status(204).end())
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({message: 'Internal server error'});
+  });
 });
 
 // Delete

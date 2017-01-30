@@ -45,7 +45,7 @@ app.post('/setlist', (req, res) => {
       tracks: req.body.tracks
     })
     .then(setlist => {
-      res.status(201).json(setlist.apiRepr());
+      res.status(201).json(setlist);
     })
     .catch(err => {
       console.error(err);

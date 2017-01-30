@@ -50,7 +50,7 @@ function generateSetlistData() {
 function seedTrackData() {
 	console.info('seeding track data');
 	const seedData = generateSetlistData();
-	return Setlist.insertMany(seedData);
+	return Setlist.create(seedData);
 }
 
 // tests
@@ -114,18 +114,27 @@ describe('Setlist Generator', function() {
 				.post('/setlist')
 				.send(newSetlist)
 				.then(function(res) {
+					// ensure that object created matches seed data
 					res.should.have.status(201);
 					res.should.be.json;
 					res.body.should.be.an('object');
 					res.body.should.include.keys('tracks');
+					res.body._id.should.not.be.null,
 					res.body.tracks[0].should.include.keys('setPosition', 'trackName', 'key', 'bpm', 'timeSignature');
-					console.log(newSetlist);
 					res.body.tracks[0].setPosition.should.equal(newSetlist.tracks[0].setPosition);
 					res.body.tracks[0].trackName.should.equal(newSetlist.tracks[0].trackName);
 					res.body.tracks[0].key.should.equal(newSetlist.tracks[0].key);
 					res.body.tracks[0].bpm.should.equal(newSetlist.tracks[0].bpm);
 					res.body.tracks[0].timeSignature.should.equal(newSetlist.tracks[0].timeSignature);
-					return Setlist.findById(res.body.id);
+					return Setlist.findById(res.body._id);
+				})
+				.then(function(setlist) {
+					// make sure that object in DB matches seed data
+					setlist.tracks[0].setPosition.should.equal(newSetlist.tracks[0].setPosition);
+					setlist.tracks[0].trackName.should.equal(newSetlist.tracks[0].trackName);
+					setlist.tracks[0].key.should.equal(newSetlist.tracks[0].key);
+					setlist.tracks[0].bpm.should.equal(newSetlist.tracks[0].bpm);
+					setlist.tracks[0].timeSignature.should.equal(newSetlist.tracks[0].timeSignature);
 				});
 		});
 	});

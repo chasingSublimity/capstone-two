@@ -35,11 +35,11 @@ function generateSetlistData() {
 	const setlistData = {tracks: []};
 	for (let i = 1; i <= 7; i++) {
 		setlistData.tracks.push({
-		setPosition: Math.floor(Math.random() * (7 - 1 + 1)) + 1,
-		trackName: faker.name.firstName(),
-		timeSignature: Math.floor(Math.random() * (16 - 1 + 1)) + 1,
-		bpm: Math.floor(Math.random() * (350 - 1 + 1)) + 1,
-		key: randomKeyGen(),
+			setPosition: Math.floor(Math.random() * (7 - 1 + 1)) + 1,
+			trackName: faker.name.firstName(),
+			timeSignature: Math.floor(Math.random() * (16 - 1 + 1)) + 1,
+			bpm: Math.floor(Math.random() * (350 - 1 + 1)) + 1,
+			key: randomKeyGen(),
 		});
 	}
 	return setlistData;
@@ -109,10 +109,25 @@ describe('Setlist Generator', function() {
 
 	describe('POST requests to /setlist', function() {
 		it('should create a new setlist', function() {
+			const newSetlist = generateSetlistData();
 			return chai.request(app)
 				.post('/setlist')
-				.then
-		})
+				.send(newSetlist)
+				.then(function(res) {
+					res.should.have.status(201);
+					res.should.be.json;
+					res.body.should.be.an('object');
+					res.body.should.include.keys('tracks');
+					res.body.tracks[0].should.include.keys('setPosition', 'trackName', 'key', 'bpm', 'timeSignature');
+					console.log(newSetlist);
+					res.body.tracks[0].setPosition.should.equal(newSetlist.tracks[0].setPosition);
+					res.body.tracks[0].trackName.should.equal(newSetlist.tracks[0].trackName);
+					res.body.tracks[0].key.should.equal(newSetlist.tracks[0].key);
+					res.body.tracks[0].bpm.should.equal(newSetlist.tracks[0].bpm);
+					res.body.tracks[0].timeSignature.should.equal(newSetlist.tracks[0].timeSignature);
+					return Setlist.findById(res.body.id);
+				});
+		});
 	});
 
 	describe('DELETE requests to /setlist/:id', function() {

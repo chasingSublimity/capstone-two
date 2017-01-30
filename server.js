@@ -39,14 +39,12 @@ app.get('/setlist', (req, res) => {
 
 // Post
 app.post('/setlist', (req, res) => {
-  console.log((req.body.tracks));
   // create track based on data from client and send back confirmation
   Setlist
     .create({
       tracks: req.body.tracks
     })
     .then(setlist => {
-      console.log(setlist);
       res.status(201).json(setlist.apiRepr());
     })
     .catch(err => {

@@ -139,6 +139,68 @@ describe('Setlist Generator', function() {
 		});
 	});
 
+	describe('PUT requests to /setlist/:id', function() {
+		it('should update the data of a specified setlist', function() {
+			// dummy data
+			const updateData = {
+				tracks: [
+					{
+			      "setPosition": 1,
+			      "trackName": "Green",
+			      "timeSignature": 4,
+			      "bpm": 145,
+			      "key": "G"
+			    },
+			    {
+			      "setPosition": 2,
+			      "trackName": "Blue",
+			      "timeSignature": 3,
+			      "bpm": 158,
+			      "key": "F#m"
+			    },
+			    {
+			      "setPosition": 3,
+			      "trackName": "Yellow",
+			      "timeSignature": 2,
+			      "bpm": 110,
+			      "key": "Ab"
+			    },
+			    {
+			      "setPosition": 4,
+			      "trackName": "Purple",
+			      "timeSignature": 6,
+			      "bpm": 175,
+			      "key": "E"
+			    },
+			    {
+			      "setPosition": 5,
+			      "trackName": "Pink",
+			      "timeSignature": 6,
+			      "bpm": 195,
+			      "key": "E"
+			    }
+				]
+			};
+			Setlist
+				.findOne()
+				.then(setlist => {
+					// add id to update data
+					updateData.id = setlist.id;
+					// make request and inspect for data consistency
+					return chai.request(app)
+						.put(`/setlist/${setlist.id}`)
+						.send(updateData);
+				})
+				.then(res => {
+					res.should.have.status(204);
+					return Setlist.findById(updateData.id);
+				})
+				.then(setlist => {
+					setlist.tracks.should.equal(updateData.tracks);
+				});
+		});
+	});
+
 	describe('DELETE requests to /setlist/:id', function() {
 		it('should delete the specified setlist', function() {
 			// declare variable here so that it is accessible in all of the functions below

@@ -56,22 +56,14 @@ app.post('/setlist', (req, res) => {
 // Put
 app.put('/setlist/:id', (req, res) => {
   // check that the req path id and the id in body are the same
-  if ((req.params.id !== req.body.id)) {
-    const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match.`;
+  if ((req.params.id !== req.body._id)) {
+    const message = `Request path id (${req.params.id}) and request body id (${req.body._id}) must match.`;
     console.error(message);
     res.status(400).json({message: message});
   }
-  
-  const toUpdate = {};
-  const updateableFields = ['setPosition', 'trackName', 'timeSignature', 'bpm', 'key'];
-  updateableFields.forEach(field => {
-    if (field in req.body) {
-      toUpdate[field] = req.body.field;
-    }
-  });
-
+  const updateData = {tracks:req.body.tracks};
   Setlist
-    .findByIdAndUpdate(req.params.id, {$set: toUpdate})
+    .findByIdAndUpdate(req.params.id, {$set: updateData})
     .exec()
     .then(setlist => res.status(204).end())
     .catch(err => {

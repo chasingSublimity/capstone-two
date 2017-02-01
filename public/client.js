@@ -1,7 +1,23 @@
 // functions to set state with API data
 
+// render setlist
+function renderSetlist(setlistArray) {
+	var setlistHtml = [];
+	for (var i=0; i < setlistArray.length; i++) {
+		var song = setlistArray[i];
+		setlistHtml.push(
+			'<div class="track-item-container">' +
+				'<input type="image" src="./assets/red-x.jpg" alt="delete button" name="delete-button" class="delete-button">' +
+				'<input type="image" src="./assets/handle-image.svg" alt="rearrange handle" name="rearrange-handle" class="rearrange-handle">' +
+				'<p class="track">' + '<strong><span onclick="this.contentEditable=true;this.focus()">' + song.trackName + '</span> -  <span onclick="this.contentEditable=true;this.focus()">' + song.key + '</span> - <span onclick="this.contentEditable=true;this.focus()">' + song.bpm + '</span></strong></p>' + 
+			'</div>'
+		);
+	}
+	$('.setlist').append(setlistHtml);
+}
+
 // render track data
-function renderTrack(song) {
+function renderNewTrack(song) {
 	var trackString = (
 		'<div class="track-item-container">' +
 			'<input type="image" src="./assets/red-x.jpg" alt="delete button" name="delete-button" class="delete-button">' +
@@ -16,9 +32,9 @@ function renderTrack(song) {
 // db functions
 
 // get existing setlist
-function getSetlist() {
-	$.get('/setlist', function(setlist) {
-		console.log(setlist);
+function getAndRenderSetlist() {
+	$.get('/setlist', function(setlistObject) {
+		renderSetlist(setlistObject.tracks);
 	});
 }
 

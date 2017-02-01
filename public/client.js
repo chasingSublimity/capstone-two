@@ -1,7 +1,5 @@
 // functions to set state with API data
 
-// render functions
-
 // render track data
 function renderTrack(song) {
 	var trackString = (
@@ -9,11 +7,27 @@ function renderTrack(song) {
 			'<input type="image" src="./assets/red-x.jpg" alt="delete button" name="delete-button" class="delete-button">' +
 			'<input type="image" src="./assets/handle-image.svg" alt="rearrange handle" name="rearrange-handle" class="rearrange-handle">' +
 			// use span tags and regex
-			'<p class="track">' + '<strong><span ondblclick="this.contentEditable=true;this.focus()">' + song.title + '</span> -  <span ondblclick="this.contentEditable=true;this.focus()">' + song.key + '</span> - <span ondblclick="this.contentEditable=true;this.focus()">' + song.bpm + '</span></strong></p>' + 
+			'<p class="track">' + '<strong><span onclick="this.contentEditable=true;this.focus()">' + song.title + '</span> -  <span onclick="this.contentEditable=true;this.focus()">' + song.key + '</span> - <span onclick="this.contentEditable=true;this.focus()">' + song.bpm + '</span></strong></p>' + 
 		'</div>'
 	);
 	$('.setlist').append(trackString);
 }
+
+// db functions
+
+// get existing setlist
+function getSetlist() {
+	$.get('/setlist', function(setlist) {
+		console.log(setlist);
+	});
+}
+
+// post new setlist
+
+// put existing setlist
+
+// delete existing setlist
+
 
 // event listeners
 function watchAddTrack() {

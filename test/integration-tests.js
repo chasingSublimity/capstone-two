@@ -93,8 +93,8 @@ describe('Setlist Generator', function() {
 					res.should.be.json;
 					res.body.tracks.should.be.an.array;
 					res.body.tracks.should.have.length.of.at.least(1);
-					res.body.tracks[0].should.contain.all.keys(['setPosition', 'trackName', '_id']);
 					res.body.tracks.should.contain.instanceof(Object);
+					res.body.tracks[0].should.contain.all.keys(['setPosition', 'trackName', '_id']);
 					res.body.tracks[0].trackName.should.be.a.string;
 					res.body.tracks[0].key.should.be.a.string;
 					res.body.tracks[0].setPosition.should.be.a.number;
@@ -182,6 +182,7 @@ describe('Setlist Generator', function() {
 				]
 			};
 			Setlist
+				// grab one setlist
 				.findOne()
 				.then(setlist => {
 					// add id to update data

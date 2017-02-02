@@ -43,7 +43,7 @@ app.post('/setlist', (req, res) => {
   console.log(req.body);
   Setlist
     .create({
-      tracks: req.body.tracks
+      tracks: req.body
     })
     .then(setlist => {
       res.status(201).json(setlist);

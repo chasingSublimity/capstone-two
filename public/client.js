@@ -1,5 +1,8 @@
 // functions to set state with API data
 
+// temp global variable
+var setlist;
+
 // render setlist
 function renderSetlist(setlistArray) {
 	var setlistHtml = [];
@@ -34,15 +37,21 @@ function renderNewTrack(song) {
 // get existing setlist
 function getAndRenderSetlist() {
 	$.get('/setlist', function(setlistObject) {
+		setlist = setlistObject;
 		renderSetlist(setlistObject.tracks);
 	});
 }
 
 // post new setlist
 function postNewSetlist(setlist) {
-	$.post('/setlist', setlist, function() {
-		console.log('setlist posted');
-	}, 'json');
+	$.ajax({
+	  type: "POST",
+	  url: '/setlist',
+	  data: JSON.stringify(setlist),
+	  success: console.log('setlist posted'),
+	  contentType: 'application/json',
+	  dataType: 'json'
+	});
 }
 
 // put existing setlist

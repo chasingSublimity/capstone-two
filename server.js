@@ -56,6 +56,7 @@ app.post('/setlist', (req, res) => {
 // Put
 app.put('/setlist/:id', (req, res) => {
   // check that the req path id and the id in body are the same
+  console.log(req.body._id);
   if ((req.params.id !== req.body._id)) {
     const message = `Request path id (${req.params.id}) and request body id (${req.body._id}) must match.`;
     console.error(message);

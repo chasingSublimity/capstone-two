@@ -44,6 +44,7 @@ function getAndRenderSetlist() {
 
 // post new setlist
 function postNewSetlist(setlist) {
+	// req data needs to be pulled from setlist div
 	$.ajax({
 	  type: "POST",
 	  url: '/setlist',
@@ -54,7 +55,17 @@ function postNewSetlist(setlist) {
 	});
 }
 
-// put existing setlist
+// edit existing setlist
+function editSetlist(setlist) {
+		$.ajax({
+	  type: "PUT",
+	  url: '/setlist/589372af2e057e0fb4f08fee', // temporary hardcode
+	  data: JSON.stringify(setlist),
+	  success: console.log('setlist posted'),
+	  contentType: 'application/json',
+	  dataType: 'json'
+	});
+}
 
 // delete existing setlist
 

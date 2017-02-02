@@ -89,6 +89,7 @@ function watchDeleteTrack() {
 }
 
 $(function() {
+	getAndRenderSetlist();
 	watchAddTrack();
 	watchUpdateTrack();
 	watchDeleteTrack();

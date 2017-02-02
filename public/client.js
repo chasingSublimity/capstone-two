@@ -39,6 +39,11 @@ function getAndRenderSetlist() {
 }
 
 // post new setlist
+function postNewSetlist(setlist) {
+	$.post('/setlist', setlist, function() {
+		console.log('setlist posted');
+	}, 'json');
+}
 
 // put existing setlist
 

@@ -1,5 +1,8 @@
 // functions to set state with API data
 
+// used to store data from/for api. for debugging purposes
+var setlist;
+
 // render setlist
 function renderSetlist(setlistArray) {
 	var setlistHtml = [];
@@ -34,18 +37,23 @@ function renderNewTrack(song) {
 // get existing setlist
 function getAndRenderSetlist() {
 	$.get('/setlist', function(setlistObject) {
+		setlist = setlistObject;
 		renderSetlist(setlistObject.tracks);
 	});
 }
 
 // post new setlist
 function postNewSetlist(setlist) {
-	$.post('/setlist', setlist, function() {
+	console.log(setlist);
+	$.post('/setlist', JSON.stringify(setlist), function() {
 		console.log('setlist posted');
 	}, 'json');
 }
 
 // put existing setlist
+function editExistingSetlist(setlist) {
+
+}
 
 // delete existing setlist
 

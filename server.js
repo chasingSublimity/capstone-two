@@ -40,6 +40,7 @@ app.get('/setlist', (req, res) => {
 // Post
 app.post('/setlist', (req, res) => {
   // create track based on data from client and send back confirmation
+  console.log(req.body);
   Setlist
     .create({
       tracks: req.body.tracks

@@ -21,6 +21,10 @@ function renderSetlist(setlistArray) {
 
 // render track data
 function renderNewTrack(song) {
+	// if UI is displaying the instructions, clear the .setlist div
+	if ($('.setlist').html() === '<p class="noSetlistMessage">Add a track above to get started!</p>') {
+		$('.setlist').html('');
+	} 
 	var trackString = (
 		'<div class="track-item-container">' +
 			'<input type="image" src="./assets/red-x.jpg" alt="delete button" name="delete-button" class="delete-button">' +
@@ -37,8 +41,15 @@ function renderNewTrack(song) {
 // get existing setlist
 function getAndRenderSetlist() {
 	$.get('/setlist', function(setlistObject) {
+		// check to see if setlist has been created
+		if (setlistObject === null) {
+			// display instructions if no setlist has been created
+			$('.setlist').html('<p class="noSetlistMessage">Add a track above to get started!</p>');
+		} else {
+			// display setlist if it has been created
 		setlist = setlistObject;
 		renderSetlist(setlistObject.tracks);
+		}
 	});
 }
 
@@ -68,7 +79,16 @@ function editSetlist(setlist) {
 }
 
 // delete existing setlist
-
+function deleteSetlist(setlist) {
+		$.ajax({
+	  type: "DELETE",
+	  url: '/setlist/589372af2e057e0fb4f08fee', // temporary hardcode
+	  data: JSON.stringify(setlist),
+	  success: console.log('setlist deleted'),
+	  contentType: 'application/json',
+	  dataType: 'json'
+	});
+}
 
 // event listeners
 function watchAddTrack() {
@@ -81,9 +101,18 @@ function watchAddTrack() {
 			bpm: form.find('#tempo').val()
 		};
 		// render data on page
-		renderTrack(song);
+		renderNewTrack(song);
 		// send data to DB
-
+		function editSetlist(setlist) {
+				$.ajax({
+			  type: "PUT",
+			  url: '/setlist/589372af2e057e0fb4f08fee', // temporary hardcode
+			  data: JSON.stringify(setlist),
+			  success: console.log('setlist posted'),
+			  contentType: 'application/json',
+			  dataType: 'json'
+			});
+		}
 		// reset UI
 		$('input').val('');
 	});
@@ -97,6 +126,16 @@ function watchUpdateTrack() {
 	});
 
 	// update on DB
+	function editSetlist(setlist) {
+			$.ajax({
+		  type: "PUT",
+		  url: '/setlist/589372af2e057e0fb4f08fee', // temporary hardcode
+		  data: JSON.stringify(setlist),
+		  success: console.log('setlist posted'),
+		  contentType: 'application/json',
+		  dataType: 'json'
+		});
+	}
 }
 
 function watchDeleteTrack() {

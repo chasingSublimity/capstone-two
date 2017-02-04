@@ -107,14 +107,16 @@ describe('Setlist Generator', function() {
 		});
 	});
 
-	describe('POST requests to /setlist', function() {
+	describe('POST requests to /tracks', function() {
 		it('should create a new setlist', function() {
 			const newSetlist = generateSetlistData();
 			return chai.request(app)
-				.post('/setlist')
+				.post('/tracks')
 				.send(newSetlist)
 				.then(function(res) {
 					// ensure that object created matches seed data
+					// console.log(res.body.tracks);
+					// console.log(newSetlist.tracks);
 					res.should.have.status(201);
 					res.should.be.json;
 					res.body.should.be.an('object');

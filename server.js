@@ -38,55 +38,18 @@ app.get('/setlist', (req, res) => {
 
 
 // Post
-app.post('/tracks', (req, res) => {
-  // create track based on data from client and send back confirmation
-
-  Setlist
-    .count({}, (err, count) => {
-      // if db is empty, create a setlist
-      if (count === 0) {
-        Setlist
-          .create({
-            tracks: req.body.tracks
-          })
-          .then(setlist => {
-            console.log('entered if statement');
-            res.status(201).json(setlist);
-          })
-          .catch(err => {
-            console.error(err);
-            res.status(500).json({message: 'Internal server error'});
-          });
-      } else {
-        // add track to setlist
-        Setlist
-          .findOneAndUpdate({}, {$push: {tracks: req.body.tracks[0]}}, {new: true})
-          .then(setlist => {
-            console.log('entered else statement');
-            res.status(201).json(setlist);
-          })
-          .catch(err => {
-            console.error(err);
-            res.status(500).json({message: 'Internal server error'});
-          });
-      }
-    });
-});
 
 app.post('/track', (req, res) => {
   // create track based on data from client and send back confirmation
-
   Setlist
     .count({}, (err, count) => {
       // if db is empty, create a setlist
       if (count === 0) {
         Setlist
           .create({
-            // use spread operator
             tracks: [req.body.track]
           })
           .then(setlist => {
-            console.log('entered if statement');
             res.status(201).json(setlist);
           })
           .catch(err => {
@@ -98,7 +61,6 @@ app.post('/track', (req, res) => {
         Setlist
           .findOneAndUpdate({}, {$push: {tracks: req.body.track}}, {new: true})
           .then(setlist => {
-            console.log('entered else statement');
             res.status(201).json(setlist);
           })
           .catch(err => {
@@ -113,7 +75,6 @@ app.post('/track', (req, res) => {
 // Put
 app.put('/setlist/:id', (req, res) => {
   // check that the req path id and the id in body are the same
-  console.log(req.body._id);
   if ((req.params.id !== req.body._id)) {
     const message = `Request path id (${req.params.id}) and request body id (${req.body._id}) must match.`;
     console.error(message);

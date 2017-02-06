@@ -54,12 +54,12 @@ function getAndRenderSetlist() {
 }
 
 // post new setlist
-function postNewSetlist(setlist) {
+function postNewTrack(track) {
 	// req data needs to be pulled from setlist div
 	$.ajax({
 	  type: "POST",
-	  url: '/setlist',
-	  data: JSON.stringify(setlist),
+	  url: '/track',
+	  data: JSON.stringify(track),
 	  success: console.log('setlist posted'),
 	  contentType: 'application/json',
 	  dataType: 'json'

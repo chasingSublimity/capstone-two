@@ -30,7 +30,7 @@ function randomKeyGen() {
   	modality.charAt(Math.floor(Math.random() * modality.length)));
 }
 
-// generates random track data
+// generates random setlist data
 function generateSetlistData() {
 	const setlistData = {tracks: []};
 	for (let i = 1; i <= 7; i++) {
@@ -107,36 +107,45 @@ describe('Setlist Generator', function() {
 		});
 	});
 
-	describe('POST requests to /tracks', function() {
-		it('should create a new setlist', function() {
-			const newSetlist = generateSetlistData();
+	describe('POST requests to /track', function() {
+		it('should create a new track', function() {
+			const newTrackData = {
+				track:{
+					setPosition: Math.floor(Math.random() * (7 - 1 + 1)) + 1,
+					trackName: faker.name.firstName(),
+					timeSignature: Math.floor(Math.random() * (16 - 1 + 1)) + 1,
+					bpm: Math.floor(Math.random() * (350 - 1 + 1)) + 1,
+					key: randomKeyGen()
+				}
+			};
 			return chai.request(app)
-				.post('/tracks')
-				.send(newSetlist)
+				.post('/track')
+				.send(newTrackData)
 				.then(function(res) {
-					// ensure that object created matches seed data
-					// console.log(res.body.tracks);
-					// console.log(newSetlist.tracks);
+					const lastItemIndex = res.body.tracks.length-1;
 					res.should.have.status(201);
 					res.should.be.json;
 					res.body.should.be.an('object');
-					res.body.should.include.keys('tracks');
-					res.body._id.should.not.be.null,
+					res.body.tracks.should.be.an('array');
+					res.body._id.should.not.be.null;
 					res.body.tracks[0].should.include.keys('setPosition', 'trackName', 'key', 'bpm', 'timeSignature');
-					res.body.tracks[0].setPosition.should.equal(newSetlist.tracks[0].setPosition);
-					res.body.tracks[0].trackName.should.equal(newSetlist.tracks[0].trackName);
-					res.body.tracks[0].key.should.equal(newSetlist.tracks[0].key);
-					res.body.tracks[0].bpm.should.equal(newSetlist.tracks[0].bpm);
-					res.body.tracks[0].timeSignature.should.equal(newSetlist.tracks[0].timeSignature);
+					// set newTrackData._id to response.body._id so tests will pass
+					newTrackData.track._id = res.body.tracks[lastItemIndex]._id;
+					// check to see if the last item in the array matches the newTrackData
+					res.body.tracks[lastItemIndex].setPosition.should.equal(newTrackData.track.setPosition);
+					res.body.tracks[lastItemIndex].trackName.should.equal(newTrackData.track.trackName);
+					res.body.tracks[lastItemIndex].key.should.equal(newTrackData.track.key);
+					res.body.tracks[lastItemIndex].bpm.should.equal(newTrackData.track.bpm);
+					res.body.tracks[lastItemIndex].timeSignature.should.equal(newTrackData.track.timeSignature);
 					return Setlist.findById(res.body._id);
 				})
-				.then(function(setlist) {
-					// make sure that object in DB matches seed data
-					setlist.tracks[0].setPosition.should.equal(newSetlist.tracks[0].setPosition);
-					setlist.tracks[0].trackName.should.equal(newSetlist.tracks[0].trackName);
-					setlist.tracks[0].key.should.equal(newSetlist.tracks[0].key);
-					setlist.tracks[0].bpm.should.equal(newSetlist.tracks[0].bpm);
-					setlist.tracks[0].timeSignature.should.equal(newSetlist.tracks[0].timeSignature);
+				.then(function(setlist){
+					// check to see if the last item in the database array matches the newTrackData object generated above
+					setlist.tracks[(setlist.tracks.length-1)].setPosition.should.equal(newTrackData.track.setPosition);
+					setlist.tracks[(setlist.tracks.length-1)].trackName.should.equal(newTrackData.track.trackName);
+					setlist.tracks[(setlist.tracks.length-1)].key.should.equal(newTrackData.track.key);
+					setlist.tracks[(setlist.tracks.length-1)].bpm.should.equal(newTrackData.track.bpm);
+					setlist.tracks[(setlist.tracks.length-1)].timeSignature.should.equal(newTrackData.track.timeSignature);
 				});
 		});
 	});

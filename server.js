@@ -75,8 +75,8 @@ app.post('/track', (req, res) => {
 // Put
 app.put('/track/:id', (req, res) => {
   // check that the req path id and the id in body are the same
-  if ((req.params.id !== req.body.id)) {
-    const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match.`;
+  if ((req.params.id !== req.body.track.id)) {
+    const message = `Request path id (${req.params.id}) and request body id (${req.body.track.id}) must match.`;
     console.error(message);
     res.status(400).json({message: message});
   }

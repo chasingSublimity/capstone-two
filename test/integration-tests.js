@@ -12,6 +12,7 @@ const should = chai.should();
 const {Setlist} = require('../models');
 const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
+mongoose.Promise = global.Promise;
 
 chai.use(chaiHttp);
 
@@ -168,24 +169,29 @@ describe('Setlist Generator', function() {
 			      "key": "G"
 			    }
 			};
-			Setlist
+			return Setlist
 				// grab one setlist
 				.findOne()
-				.then(setlist => {
+				.exec()
+				.then(function(setlist) {
 					// add id to update data
-					updateData.id = setlist.tracks[0]._id;
+					updateData.track.id = setlist.tracks[0]._id;
+					console.log('The new id is:', updateData.track);
 					// make request
 					return chai.request(app)
-						.put(`/track/${updateData.id}`)
+						.put(`/track/${updateData.track.id}`)
 						.send(updateData);
 				})
-				.then(res => {
+				.then(function(res) {
 					res.should.have.status(204);
-					Setlist.findById(updateData.id);
+					return Setlist.findOne().exec();
 				})
-				.then(setlist => {
-					console.log(setlist.tracks, updateData.track);
-					setlist.tracks.should.equal(updateData.track);
+				.then(function(setlist) {
+					const updatedTrack = setlist.tracks[0];
+					updatedTrack.key.should.equal(updateData.track.key);
+					updatedTrack.bpm.should.equal(updateData.track.bpm);
+					updatedTrack.timeSignature.should.equal(updateData.track.timeSignature);
+					updatedTrack.setPosition.should.equal(updateData.track.setPosition);
 				});
 		});
 	});

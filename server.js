@@ -73,18 +73,26 @@ app.post('/track', (req, res) => {
 
 
 // Put
-app.put('/setlist/:id', (req, res) => {
+app.put('/track/:id', (req, res) => {
   // check that the req path id and the id in body are the same
-  if ((req.params.id !== req.body._id)) {
-    const message = `Request path id (${req.params.id}) and request body id (${req.body._id}) must match.`;
+  if ((req.params.id !== req.body.id)) {
+    const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match.`;
     console.error(message);
     res.status(400).json({message: message});
   }
-  const updateData = {tracks:req.body.tracks};
+  const updateData = {track: req.body.track};
   Setlist
-    .findByIdAndUpdate(req.params.id, {$set: updateData})
+    .update({'tracks._id': req.params.id}, {'$set': {
+      'tracks.$.trackName': updateData.track.trackName,
+      'tracks.$.bpm': updateData.track.bpm,
+      'tracks.$.key': updateData.track.key,
+      'tracks.$.setPosition': updateData.track.setPosition,
+      'tracks.$.timeSignature': updateData.track.timeSignature
+    }})
     .exec()
-    .then(setlist => res.status(204).end())
+    .then(response => {
+      res.status(204).end();
+    })
     .catch(err => {
       console.error(err);
       res.status(500).json({message: 'Internal server error'});
@@ -92,9 +100,11 @@ app.put('/setlist/:id', (req, res) => {
 });
 
 // Delete
-app.delete('/setlist/:id', (req, res) => {
+app.delete('/track/:id', (req, res) => {
   Setlist
-    .findByIdAndRemove(req.params.id)
+    .update({'tracks._id': req.params.id}, {'$pull': 
+      {'tracks': {'_id': req.params.id}}
+  })
     .exec()
     .then(() => res.status(204).end())
     .catch(err => {

@@ -31,6 +31,8 @@ function randomKeyGen() {
 }
 
 // generates random setlist data
+
+// break into two function
 function generateSetlistData() {
 	const setlistData = {tracks: []};
 	for (let i = 1; i <= 7; i++) {
@@ -132,6 +134,7 @@ describe('Setlist Generator', function() {
 					// set newTrackData._id to response.body._id so tests will pass
 					newTrackData.track._id = res.body.tracks[lastItemIndex]._id;
 					// check to see if the last item in the array matches the newTrackData
+					// make res.body.tracks[lastItemIndex] into a variable -- lastItem
 					res.body.tracks[lastItemIndex].setPosition.should.equal(newTrackData.track.setPosition);
 					res.body.tracks[lastItemIndex].trackName.should.equal(newTrackData.track.trackName);
 					res.body.tracks[lastItemIndex].key.should.equal(newTrackData.track.key);
@@ -141,6 +144,7 @@ describe('Setlist Generator', function() {
 				})
 				.then(function(setlist){
 					// check to see if the last item in the database array matches the newTrackData object generated above
+					// add lastItemIndex variable
 					setlist.tracks[(setlist.tracks.length-1)].setPosition.should.equal(newTrackData.track.setPosition);
 					setlist.tracks[(setlist.tracks.length-1)].trackName.should.equal(newTrackData.track.trackName);
 					setlist.tracks[(setlist.tracks.length-1)].key.should.equal(newTrackData.track.key);
@@ -150,86 +154,58 @@ describe('Setlist Generator', function() {
 		});
 	});
 
-	describe('PUT requests to /setlist/:id', function() {
+	describe('PUT requests to /track/:id', function() {
 		it('should update the data of a specified setlist', function() {
 			// dummy data
 			const updateData = {
-				tracks: [
+				track:
 					{
-			      "setPosition": 1,
+			      "setPosition": 9,
 			      "trackName": "Green",
 			      "timeSignature": 4,
 			      "bpm": 145,
 			      "key": "G"
-			    },
-			    {
-			      "setPosition": 2,
-			      "trackName": "Blue",
-			      "timeSignature": 3,
-			      "bpm": 158,
-			      "key": "F#m"
-			    },
-			    {
-			      "setPosition": 3,
-			      "trackName": "Yellow",
-			      "timeSignature": 2,
-			      "bpm": 110,
-			      "key": "Ab"
-			    },
-			    {
-			      "setPosition": 4,
-			      "trackName": "Purple",
-			      "timeSignature": 6,
-			      "bpm": 175,
-			      "key": "E"
-			    },
-			    {
-			      "setPosition": 5,
-			      "trackName": "Pink",
-			      "timeSignature": 6,
-			      "bpm": 195,
-			      "key": "E"
 			    }
-				]
 			};
 			Setlist
 				// grab one setlist
 				.findOne()
 				.then(setlist => {
 					// add id to update data
-					updateData.id = setlist.id;
-					// make request and inspect for data consistency
+					updateData.id = setlist.tracks[0]._id;
+					// make request
 					return chai.request(app)
-						.put(`/setlist/${setlist.id}`)
+						.put(`/track/${updateData.id}`)
 						.send(updateData);
 				})
 				.then(res => {
 					res.should.have.status(204);
-					return Setlist.findById(updateData.id);
+					Setlist.findById(updateData.id);
 				})
 				.then(setlist => {
-					setlist.tracks.should.equal(updateData.tracks);
+					console.log(setlist.tracks, updateData.track);
+					setlist.tracks.should.equal(updateData.track);
 				});
 		});
 	});
 
-	describe('DELETE requests to /setlist/:id', function() {
-		it('should delete the specified setlist', function() {
+	describe('DELETE requests to /track/:id', function() {
+		it('should delete the specified track', function() {
 			// declare variable here so that it is accessible in all of the functions below
-			let setlist;
+			let track;
 			return Setlist
 				.findOne()
 				.exec()
-				.then(function(_setlist) {
-					setlist = _setlist;
-					return chai.request(app).delete(`/setlist/${setlist.id}`);
+				.then(function(setlist) {
+					track = setlist.tracks[0];
+					return chai.request(app).delete(`/track/${track._id}`);
 				})
 				.then(function(res) {
 					res.should.have.status(204);
-					return Setlist.findById(setlist.id);
+					return Setlist.findById(track.id);
 				})
-				.then(function(_setlist){
-					should.not.exist(_setlist);
+				.then(function(track){
+					should.not.exist(track);
 				});
 		});
 	});

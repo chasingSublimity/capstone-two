@@ -184,9 +184,11 @@ describe('Setlist Generator', function() {
 				})
 				.then(function(res) {
 					res.should.have.status(204);
+					// return the setlist in db
 					return Setlist.findOne().exec();
 				})
 				.then(function(setlist) {
+					// inspect the track to ensure that it was actually updated
 					const updatedTrack = setlist.tracks[0];
 					updatedTrack.key.should.equal(updateData.track.key);
 					updatedTrack.bpm.should.equal(updateData.track.bpm);

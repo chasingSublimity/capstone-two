@@ -91,20 +91,21 @@ describe('Setlist Generator', function() {
 			return chai.request(app)
 				.get('/setlist')
 				.then(function(res) {
+					const setlist = res.body.tracks;
 					res.should.have.status(200);
 					res.should.be.json;
-					res.body.tracks.should.be.an.array;
-					res.body.tracks.should.have.length.of.at.least(1);
-					res.body.tracks.should.contain.instanceof(Object);
-					res.body.tracks[0].should.contain.all.keys(['setPosition', 'trackName', '_id']);
-					res.body.tracks[0].trackName.should.be.a.string;
-					res.body.tracks[0].key.should.be.a.string;
-					res.body.tracks[0].setPosition.should.be.a.number;
-					res.body.tracks[0]._id.should.be.a.number;
-					res.body.tracks[0].bpm.should.be.a.number;
-					res.body.tracks[0].timeSignature.should.be.a.number;
-					res.body.tracks[0].bpm.should.be.above(0).and.below(351);
-					res.body.tracks[0].timeSignature.should.be.above(0).and.below(17);
+					setlist.should.be.an.array;
+					setlist.should.have.length.of.at.least(1);
+					setlist.should.contain.instanceof(Object);
+					setlist[0].should.contain.all.keys(['setPosition', 'trackName', '_id']);
+					setlist[0].trackName.should.be.a.string;
+					setlist[0].key.should.be.a.string;
+					setlist[0].setPosition.should.be.a.number;
+					setlist[0]._id.should.be.a.number;
+					setlist[0].bpm.should.be.a.number;
+					setlist[0].timeSignature.should.be.a.number;
+					setlist[0].bpm.should.be.above(0).and.below(351);
+					setlist[0].timeSignature.should.be.above(0).and.below(17);
 				});
 		});
 	});
@@ -124,7 +125,7 @@ describe('Setlist Generator', function() {
 				.post('/track')
 				.send(newTrackData)
 				.then(function(res) {
-					const lastItemIndex = res.body.tracks.length-1;
+					const lastSong = res.body.tracks[res.body.tracks.length-1];
 					res.should.have.status(201);
 					res.should.be.json;
 					res.body.should.be.an('object');
@@ -132,24 +133,24 @@ describe('Setlist Generator', function() {
 					res.body._id.should.not.be.null;
 					res.body.tracks[0].should.include.keys('setPosition', 'trackName', 'key', 'bpm', 'timeSignature');
 					// set newTrackData._id to response.body._id so tests will pass
-					newTrackData.track._id = res.body.tracks[lastItemIndex]._id;
+					newTrackData.track._id = lastSong._id;
 					// check to see if the last item in the array matches the newTrackData
-					// make res.body.tracks[lastItemIndex] into a variable -- lastItem
-					res.body.tracks[lastItemIndex].setPosition.should.equal(newTrackData.track.setPosition);
-					res.body.tracks[lastItemIndex].trackName.should.equal(newTrackData.track.trackName);
-					res.body.tracks[lastItemIndex].key.should.equal(newTrackData.track.key);
-					res.body.tracks[lastItemIndex].bpm.should.equal(newTrackData.track.bpm);
-					res.body.tracks[lastItemIndex].timeSignature.should.equal(newTrackData.track.timeSignature);
+					lastSong.setPosition.should.equal(newTrackData.track.setPosition);
+					lastSong.trackName.should.equal(newTrackData.track.trackName);
+					lastSong.key.should.equal(newTrackData.track.key);
+					lastSong.bpm.should.equal(newTrackData.track.bpm);
+					lastSong.timeSignature.should.equal(newTrackData.track.timeSignature);
 					return Setlist.findById(res.body._id);
 				})
 				.then(function(setlist){
 					// check to see if the last item in the database array matches the newTrackData object generated above
 					// add lastItemIndex variable
-					setlist.tracks[(setlist.tracks.length-1)].setPosition.should.equal(newTrackData.track.setPosition);
-					setlist.tracks[(setlist.tracks.length-1)].trackName.should.equal(newTrackData.track.trackName);
-					setlist.tracks[(setlist.tracks.length-1)].key.should.equal(newTrackData.track.key);
-					setlist.tracks[(setlist.tracks.length-1)].bpm.should.equal(newTrackData.track.bpm);
-					setlist.tracks[(setlist.tracks.length-1)].timeSignature.should.equal(newTrackData.track.timeSignature);
+					const _lastSong = setlist.tracks[(setlist.tracks.length-1)];
+					_lastSong.setPosition.should.equal(newTrackData.track.setPosition);
+					_lastSong.trackName.should.equal(newTrackData.track.trackName);
+					_lastSong.key.should.equal(newTrackData.track.key);
+					_lastSong.bpm.should.equal(newTrackData.track.bpm);
+					_lastSong.timeSignature.should.equal(newTrackData.track.timeSignature);
 				});
 		});
 	});

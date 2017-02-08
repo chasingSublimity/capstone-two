@@ -176,7 +176,6 @@ describe('Setlist Generator', function() {
 				.then(function(setlist) {
 					// add id to update data
 					updateData.track.id = setlist.tracks[0]._id;
-					console.log('The new id is:', updateData.track);
 					// make request
 					return chai.request(app)
 						.put(`/track/${updateData.track.id}`)
@@ -202,19 +201,23 @@ describe('Setlist Generator', function() {
 		it('should delete the specified track', function() {
 			// declare variable here so that it is accessible in all of the functions below
 			let track;
+			let setLength;
 			return Setlist
 				.findOne()
 				.exec()
 				.then(function(setlist) {
 					track = setlist.tracks[0];
+					setLength = setlist.tracks.length;
 					return chai.request(app).delete(`/track/${track._id}`);
 				})
 				.then(function(res) {
 					res.should.have.status(204);
-					return Setlist.findById(track.id);
+					return Setlist.findOne().exec();
 				})
-				.then(function(track){
-					should.not.exist(track);
+				.then(function(setlist){
+					console.log(track);
+					setlist.tracks.length.should.equal(setLength-1);
+					setlist.tracks.should.not.contain(track);
 				});
 		});
 	});

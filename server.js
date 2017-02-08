@@ -41,6 +41,7 @@ app.get('/setlist', (req, res) => {
 
 app.post('/track', (req, res) => {
   // create track based on data from client and send back confirmation
+  console.log(req.body);
   Setlist
     .count({}, (err, count) => {
       // if db is empty, create a setlist

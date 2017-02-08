@@ -90,13 +90,14 @@ function watchAddTrack() {
 		event.preventDefault();
 		var form = $(this);
 		var song = {
-			title: form.find('#title').val(),
+			trackName: form.find('#title').val(),
 			key: form.find('#key').val(),
 			bpm: form.find('#tempo').val()
 		};
 		// render data on page
 		renderNewTrack(song);
 		// send data to DB
+		postNewTrack();
 		// reset UI
 		$('input').val('');
 	});

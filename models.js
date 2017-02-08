@@ -4,9 +4,7 @@ const mongoose = require('mongoose');
 
 const setlistSchema = mongoose.Schema({
 	tracks: [{
-		setPosition: Number,
 		trackName: String,
-		timeSignature: Number,
 		bpm: Number,
 		key: String
 	}]

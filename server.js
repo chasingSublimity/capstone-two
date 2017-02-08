@@ -87,8 +87,6 @@ app.put('/track/:id', (req, res) => {
       'tracks.$.trackName': updateData.track.trackName,
       'tracks.$.bpm': updateData.track.bpm,
       'tracks.$.key': updateData.track.key,
-      'tracks.$.setPosition': updateData.track.setPosition,
-      'tracks.$.timeSignature': updateData.track.timeSignature
     }})
     .exec()
     .then(response => {

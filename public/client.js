@@ -43,7 +43,8 @@ var SetList = {};
 // get existing setlist
 SetList.getSetlist = function(callbackFn) {
 	$.get('/setlist', function(data) {
-		callbackFn(data);
+		console.log(data);
+		callbackFn(data.tracks);
 		// saveToSessionStorage(data);
 	});
 };
@@ -86,24 +87,24 @@ SetList.deleteSetlist = function(setlist) {
 
 // rendering functions
 
-SetList.renderSetlist = function(apiResponse) {
-		if (apiResponse === null) {
-			// display instructions if no setlist has been created
-			$('.setlist').html('<p class="noSetlistMessage">Add a track above to get started!</p>');
-		} else {
-			// display setlist if it has been created
-			var setlistHtml = [];
-			for (var i=0; i < apiResponse.tracks.length; i++) {
-				var song = apiResponse.tracks[i];
-				setlistHtml.push(
-					'<div class="track-item-container">' +
-						'<input type="image" src="./assets/red-x.jpg" alt="delete button" name="delete-button" class="delete-button">' +
-						'<p class="track">' + '<strong><span onclick="this.contentEditable=true;this.focus()">' + song.trackName + '</span> -  <span onclick="this.contentEditable=true;this.focus()">' + song.key + '</span> - <span onclick="this.contentEditable=true;this.focus()">' + song.bpm + '</span></strong></p>' + 
-					'</div>'
-				);
-			}
-			$('.setlist').append(setlistHtml);
+SetList.renderTracks = function(tracks) {
+	if (tracks === null) {
+		// display instructions if no setlist has been created
+		$('.setlist').html('<p class="noSetlistMessage">Add a track above to get started!</p>');
+	} else {
+		// display setlist if it has been created
+		var setlistHtml = [];
+		for (var i=0; i < tracks.length; i++) {
+			var song = tracks[i];
+			setlistHtml.push(
+				'<div class="track-item-container">' +
+					'<input type="image" src="./assets/red-x.jpg" alt="delete button" name="delete-button" class="delete-button">' +
+					'<p class="track" data-id="' + tracks[i]._id + '">' + '<strong><span onclick="this.contentEditable=true;this.focus()">' + song.trackName + '</span> -  <span onclick="this.contentEditable=true;this.focus()">' + song.key + '</span> - <span onclick="this.contentEditable=true;this.focus()">' + song.bpm + '</span></strong></p>' + 
+				'</div>'
+			);
 		}
+		$('.setlist').append(setlistHtml);
+	}
 };
 
 // render track data
@@ -127,15 +128,17 @@ SetList.watchAddTrack = function() {
 	$('form').on('submit', function(event) {
 		event.preventDefault();
 		var form = $(this);
-		var song = {
-			trackName: form.find('#title').val(),
-			key: form.find('#key').val(),
-			bpm: form.find('#tempo').val()
+		var song = {tracks: 
+			[{
+				trackName: form.find('#title').val(),
+				key: form.find('#key').val(),
+				bpm: form.find('#tempo').val()
+			}]
 		};
 		// render data on page
-		SetList.renderNewTrack(song);
+		SetList.renderTracks(song.tracks);
 		// send data to DB
-		SetList.postNewTrack(song);
+		SetList.postNewTrack(song.tracks[0]);
 		// reset UI
 		$('input').val('');
 	});
@@ -160,7 +163,7 @@ SetList.watchDeleteTrack = function() {
 };
 
 $(function() {
-	SetList.getSetlist(SetList.renderSetlist);
+	SetList.getSetlist(SetList.renderTracks);
 	SetList.watchAddTrack();
 	SetList.watchUpdateTrack();
 	SetList.watchDeleteTrack();

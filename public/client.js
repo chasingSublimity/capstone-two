@@ -74,14 +74,11 @@ SetList.editTrack = function(track) {
 };
 
 // delete existing setlist
-SetList.deleteSetlist = function(setlist) {
+SetList.deleteTrack = function(trackId) {
 		$.ajax({
 	  type: "DELETE",
-	  url: '/setlist/' + track._id,
-	  data: JSON.stringify(setlist),
+	  url: '/track/' + trackId,
 	  success: console.log('setlist deleted'),
-	  contentType: 'application/json',
-	  dataType: 'json'
 	});
 };
 
@@ -105,22 +102,6 @@ SetList.renderTracks = function(tracks) {
 		}
 		$('.setlist').append(setlistHtml);
 	}
-};
-
-// render track data
-SetList.renderNewTrack = function(song) {
-	// if UI is displaying the instructions, clear the .setlist div
-	if ($('.setlist').html() === '<p class="noSetlistMessage">Add a track above to get started!</p>') {
-		$('.setlist').html('');
-	} 
-	var trackString = (
-		'<div class="track-item-container">' +
-			'<input type="image" src="./assets/red-x.jpg" alt="delete button" name="delete-button" class="delete-button">' +
-			// use span tags and regex
-			'<p class="track">' + '<strong><span onclick="this.contentEditable=true;this.focus()">' + song.trackName + '</span> -  <span onclick="this.contentEditable=true;this.focus()">' + song.key + '</span> - <span onclick="this.contentEditable=true;this.focus()">' + song.bpm + '</span></strong></p>' + 
-		'</div>'
-	);
-	$('.setlist').append(trackString);
 };
 
 // event listeners
@@ -157,9 +138,10 @@ SetList.watchUpdateTrack = function() {
 SetList.watchDeleteTrack = function() {
 	// delete from UI
 	$(document).on('click', '.delete-button', function(event) {
+		var dataId = $(this).siblings('p').attr('data-id');
+		SetList.deleteTrack(dataId);
 		$(this).parent('div').remove();
 	});
-	// delete from DB	
 };
 
 $(function() {

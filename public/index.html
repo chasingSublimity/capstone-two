@@ -24,7 +24,7 @@
     <form action="" id="add-track-form">
       <fieldset>
         <input type="text" class="song-title form-inputs" id="title" name="song-title" placeholder="Song Title" required>
-        <input type="text" class="song-key form-inputs" id="key" name="song-key" placeholder="Key">
+        <input type="text" class="song-key form-inputs" id="key" name="song-key" placeholder="Key" pattern="[A-Ga-g#♮]+">
         <input type="number" min="1" max="350" class="song-tempo form-inputs" id="tempo" name="song-tempo" placeholder="BPM">
       </fieldset>
       <button class="add-track-button" type="submit" form="add-track-form">Add</button>

@@ -200,7 +200,6 @@ describe('Setlist Generator', function() {
 					return Setlist.findOne().exec();
 				})
 				.then(function(setlist){
-					console.log(track);
 					setlist.tracks.length.should.equal(setLength-1);
 					setlist.tracks.should.not.contain(track);
 				});

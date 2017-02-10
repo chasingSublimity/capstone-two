@@ -158,7 +158,7 @@ SetList.watchDeleteTrack = function() {
 	$(document).on('click', '.delete-button', function(event) {
 		var dataId = $(this).siblings('p').attr('data-id');
 		SetList.deleteTrack(dataId);
-		$(this).parent()('div').remove();
+		$(this).parent('div').remove();
 	});
 };
 

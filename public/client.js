@@ -43,7 +43,6 @@ var SetList = {};
 // get existing setlist
 SetList.getSetlist = function(callbackFn) {
 	$.get('/setlist', function(data) {
-		console.log(data);
 		callbackFn(data.tracks);
 		// saveToSessionStorage(data);
 	});
@@ -67,7 +66,7 @@ SetList.editTrack = function(track) {
 	  type: "PUT",
 	  url: '/track/' + track._id, 
 	  data: JSON.stringify(setlist),
-	  success: console.log('setlist posted'),
+	  success: console.log('setlist edited'),
 	  contentType: 'application/json',
 	  dataType: 'json'
 	});
@@ -78,7 +77,7 @@ SetList.deleteTrack = function(trackId) {
 		$.ajax({
 	  type: "DELETE",
 	  url: '/track/' + trackId,
-	  success: console.log('setlist deleted'),
+	  success: console.log('track deleted'),
 	});
 };
 
@@ -96,7 +95,7 @@ SetList.renderTracks = function(tracks) {
 			setlistHtml.push(
 				'<div class="track-item-container">' +
 					'<input type="image" src="./assets/red-x.jpg" alt="delete button" name="delete-button" class="delete-button">' +
-					'<p class="track" data-id="' + tracks[i]._id + '">' + '<strong><span onclick="this.contentEditable=true;this.focus()">' + song.trackName + '</span> -  <span onclick="this.contentEditable=true;this.focus()">' + song.key + '</span> - <span onclick="this.contentEditable=true;this.focus()">' + song.bpm + '</span></strong></p>' + 
+					'<p class="track" data-id="' + tracks[i]._id + '">' + '<strong><span onclick="this.contentEditable=true;this.focus()">' + song.trackName + '</span> -  <span onclick="this.contentEditable=true;this.focus()" pattern="[A-Ga-g#♮]+">' + song.key + '</span> - <span onclick="this.contentEditable=true;this.focus()">' + song.bpm + '</span></strong></p>' + 
 				'</div>'
 			);
 		}
@@ -128,11 +127,19 @@ SetList.watchAddTrack = function() {
 SetList.watchUpdateTrack = function() {
 	// update on ui using sortable library
 	var el = document.getElementById('sortable-setlist');
-
 	Sortable.create(el, {
 		animation: 250
 	});
 	// update on DB
+	var timer1;
+	$(document).on('input', 'span', function(event) {
+		var that = this;
+		clearTimeout(timer1);
+		timer1 = setTimeout(function() {
+			var spanVal = $(that).html();
+			console.log(spanVal);
+		}, 3000);
+	});
 };
 
 SetList.watchDeleteTrack = function() {

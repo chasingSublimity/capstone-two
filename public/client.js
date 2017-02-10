@@ -53,7 +53,7 @@ SetList.postNewTrack = function(newTrack) {
 	$.ajax({
 	  type: "POST",
 	  url: '/track',
-	  data: JSON.stringify({track: newTrack}),
+	  data: {track: newTrack},
 	  success: console.log('setlist posted'),
 	  contentType: 'application/json',
 	  dataType: 'json'
@@ -61,11 +61,11 @@ SetList.postNewTrack = function(newTrack) {
 };
 
 // edit existing setlist
-SetList.editTrack = function(track) {
+SetList.editTrack = function(trackId, trackData) {
 		$.ajax({
 	  type: "PUT",
-	  url: '/track/' + track._id, 
-	  data: JSON.stringify(setlist),
+	  url: '/track/' + trackId, 
+	  data: JSON.stringify({track: trackData}),
 	  success: console.log('setlist edited'),
 	  contentType: 'application/json',
 	  dataType: 'json'
@@ -82,9 +82,8 @@ SetList.deleteTrack = function(trackId) {
 };
 
 // rendering functions
-
 SetList.renderTracks = function(tracks) {
-	if (tracks === null) {
+	if (!tracks) {
 		// display instructions if no setlist has been created
 		$('.setlist').html('<p class="noSetlistMessage">Add a track above to get started!</p>');
 	} else {
@@ -95,7 +94,7 @@ SetList.renderTracks = function(tracks) {
 			setlistHtml.push(
 				'<div class="track-item-container">' +
 					'<input type="image" src="./assets/red-x.jpg" alt="delete button" name="delete-button" class="delete-button">' +
-					'<p class="track" data-id="' + tracks[i]._id + '">' + '<strong><span onclick="this.contentEditable=true;this.focus()">' + song.trackName + '</span> -  <span onclick="this.contentEditable=true;this.focus()" pattern="[A-Ga-g#♮]+">' + song.key + '</span> - <span onclick="this.contentEditable=true;this.focus()">' + song.bpm + '</span></strong></p>' + 
+					'<p class="track" data-id="' + tracks[i]._id + '">' + '<strong><span class="trackName" onclick="this.contentEditable=true;this.focus()">' + song.trackName + '</span> -  <span class="key" onclick="this.contentEditable=true;this.focus()" pattern="[A-Ga-g#♮]+">' + song.key + '</span> - <span class="bpm" onclick="this.contentEditable=true;this.focus()">' + song.bpm + '</span></strong></p>' + 
 				'</div>'
 			);
 		}
@@ -103,10 +102,13 @@ SetList.renderTracks = function(tracks) {
 	}
 };
 
+// function
+
 // event listeners
 SetList.watchAddTrack = function() {
 	$('form').on('submit', function(event) {
 		event.preventDefault();
+		// grab data from form and construct songObject
 		var form = $(this);
 		var song = {tracks: 
 			[{
@@ -131,14 +133,23 @@ SetList.watchUpdateTrack = function() {
 		animation: 250
 	});
 	// update on DB
+	// declare variable outside of event handler so it doesn't get overwritten
 	var timer1;
 	$(document).on('input', 'span', function(event) {
-		var that = this;
+		// avoid JS this nonsense
+		var that = $(this);
+		var trackId = that.parents('p').attr('data-id');
+		// cancel any previous setTimeout functions that may be pending.
 		clearTimeout(timer1);
 		timer1 = setTimeout(function() {
-			var spanVal = $(that).html();
-			console.log(spanVal);
-		}, 3000);
+			var updateData = {
+				trackName: that.parent().find('.trackName').html(),
+				key: that.parent().find('.key').html(),
+				bpm: that.parent().find('.bpm').html(),
+				id: trackId
+			};
+			SetList.editTrack(trackId, updateData);
+		}, 2000);
 	});
 };
 
@@ -147,7 +158,7 @@ SetList.watchDeleteTrack = function() {
 	$(document).on('click', '.delete-button', function(event) {
 		var dataId = $(this).siblings('p').attr('data-id');
 		SetList.deleteTrack(dataId);
-		$(this).parent('div').remove();
+		$(this).parent()('div').remove();
 	});
 };
 

@@ -155,11 +155,15 @@ SetList.watchReorderSetlist = function() {
 
 SetList.watchDeleteTrack = function() {
 	$(document).on('click', '.delete-button', function(event) {
-		var dataId = $(this).siblings('p').attr('data-id');
-		// delete from DB
-		SetList.deleteTrack(dataId);
-		// delete from UI
-		$(this).parent('div').remove();
+		// confirm with user, then delete track from UI and DB if user confirms
+		var confirmation = confirm('Are you you sure?');
+		if (confirmation) {
+				var dataId = $(this).siblings('p').attr('data-id');
+				// delete from DB
+				SetList.deleteTrack(dataId);
+				// delete from UI
+				$(this).parent('div').remove();
+			}
 	});
 };
 

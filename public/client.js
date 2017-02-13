@@ -136,16 +136,28 @@ SetList.watchUpdateTrack = function() {
 };
 
 SetList.watchReorderSetlist = function() {
+	// query screensize to determine if mobile and set reorderEvent accordingly
+	var reorderEvent;
+	if (screen.width > 1024) {
+		reorderEvent = 'dragend';
+	} else {
+		reorderEvent = 'touchmove';
+	}
 	// when a track container dragend event is fired, clear the trackIds array
 	// loop through each .track element and push the id to array
 	// then make api call with id array
-	$(document).on('dragend', '.track-item-container', function() {
+	var reorderTimer;
+	$(document).on(reorderEvent, '.track-item-container', function() {
 		var trackIds = [];
-		$('.track').each(function() {
-			trackIds.push($(this).attr('data-id'));
-		});
-		SetList.editSetlist(trackIds);
+		clearTimeout(reorderTimer);
+		reorderTimer = setTimeout(function() {
+			$('.track').each(function() {
+				trackIds.push($(this).attr('data-id'));
+				});
+			SetList.editSetlist(trackIds);
+		}, 1500);
 	});
+
 };
 
 SetList.watchDeleteTrack = function() {

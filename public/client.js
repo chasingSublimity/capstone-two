@@ -1,7 +1,5 @@
 var SetList = {};
 
-// api calls
-
 // get existing setlist
 SetList.getSetlist = function() {
 	$.get('/setlist', function(data) {
@@ -33,7 +31,6 @@ SetList.editTrack = function(trackId, trackData) {
 	  type: "PUT",
 	  url: '/track/' + trackId, 
 	  data: JSON.stringify({track: trackData}),
-	  success: console.log('track edited'),
 	  contentType: 'application/json',
 	  dataType: 'json'
 	});
@@ -45,7 +42,6 @@ SetList.editSetlist = function(idArray) {
 	  type: "PUT",
 	  url: '/setlist', 
 	  data: JSON.stringify({trackIds: idArray}),
-	  success: console.log('setlist edited'),
 	  contentType: 'application/json',
 	  dataType: 'json'
 	});
@@ -56,7 +52,6 @@ SetList.deleteTrack = function(trackId) {
 		$.ajax({
 	  type: "DELETE",
 	  url: '/track/' + trackId,
-	  success: console.log('track deleted'),
 	});
 };
 

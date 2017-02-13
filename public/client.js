@@ -62,13 +62,19 @@ SetList.deleteTrack = function(trackId) {
 
 // rendering function
 SetList.renderTracks = function(tracks) {
+	var noTracksMessage = 
+		'<div class="track-item-container">' +
+				'<p class="no-track"><strong><span class=".no-setlist-message">Add a track above to get started!</span></strong></p>' + 
+			'</div>';
+	// display instructions if no setlist has been created
 	if (tracks.length === 0) {
-		// display instructions if no setlist has been created
-		$('.setlist').html('<div class="track-item-container">' +
-					'<p class="no-track"><strong><span class=".no-setlist-message">Add a track above to get started!</span></strong></p>' + 
-				'</div>');
+		$('.setlist').html(noTracksMessage);
 	} else {
-		// display setlist if it has been created
+		// if noTracksMessage is displayed, clear .setlist
+		if ($('.setlist').html() === noTracksMessage) {
+			$('.setlist').html('');
+		}
+		// display setlist
 		var setlistHtml = [];
 		for (var i=0; i < tracks.length; i++) {
 			var song = tracks[i];
@@ -86,7 +92,6 @@ SetList.renderTracks = function(tracks) {
 // event listeners
 SetList.watchAddTrack = function() {
 	// handle the instructions that display if no tracks are in DB
-	if ($('.setlist').child)
 	$('form').on('submit', function(event) {
 		event.preventDefault();
 		// grab data from form and construct songObject

@@ -41,35 +41,27 @@ app.get('/setlist', (req, res) => {
 
 app.post('/track', (req, res) => {
   // create track based on data from client and send back confirmation
-  console.log(req.body);
-  Setlist
-    .count({}, (err, count) => {
-      // if db is empty, create a setlist
-      if (count === 0) {
-        Setlist
-          .create({
-            tracks: [req.body.track]
-          })
-          .then(setlist => {
-            res.status(201).json(setlist);
-          })
-          .catch(err => {
-            console.error(err);
-            res.status(500).json({message: 'Internal server error'});
-          });
-      } else {
-        // add track to setlist
-        Setlist
-          .findOneAndUpdate({}, {$push: {tracks: req.body.track}}, {new: true})
-          .then(setlist => {
-            res.status(201).json(setlist);
-          })
-          .catch(err => {
-            console.error(err);
-            res.status(500).json({message: 'Internal server error'});
-          });
-      }
+  Setlist.count({}, (err, count) => {
+    let promise;
+    // if db is empty, create a setlist
+    if (count === 0) {
+      promise = Setlist.create({
+        tracks: [req.body.track]
+      });
+    } else {
+      // add track to setlist
+      promise = Setlist.findOneAndUpdate({}, 
+        {$push: {tracks: req.body.track}},
+        {new: true}
+      );
+    }
+    promise.then(setlist => {
+      res.status(201).json(setlist);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).json({message: 'Internal server error'});
     });
+  });
 });
 
 
@@ -96,6 +88,38 @@ app.put('/track/:id', (req, res) => {
       console.error(err);
       res.status(500).json({message: 'Internal server error'});
   });
+});
+
+app.put('/setlist', (req, res) => {
+  const newOrderIds = req.body.trackIds;
+  let updatedOrder = [];
+  Setlist
+    // find setlist
+    .findOne()
+    // return promise
+    .exec()
+    .then(setlist => {
+      // loop through setlist array and reorder according to newOrderIds
+      for (var i=0; i < newOrderIds.length; i++) {
+         updatedOrder.push(setlist.tracks.find(track => 
+          track.id === newOrderIds[i])
+         );
+       }
+       return updatedOrder;
+      })
+      .then(newSetlist => {
+        Setlist
+          .update({'$set': {tracks: newSetlist}})
+          .exec()
+          .then(response => {
+            res.status(204).end();
+          });
+      }
+        )
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({message: 'Internal server error'});
+    });
 });
 
 // Delete

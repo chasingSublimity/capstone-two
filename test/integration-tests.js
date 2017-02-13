@@ -182,6 +182,54 @@ describe('Setlist Generator', function() {
 		});
 	});
 
+	describe('PUT requests to /setlist', function() {
+		it('should reorder the tracks based on an array of track ids sent from the user', function() {
+			let newSetlistOrder;
+			// array scramble function
+			function scrambleArray(array) {
+			  var currentIndex = array.length, temporaryValue, randomIndex;
+			  // While there remain elements to shuffle...
+			  while (0 !== currentIndex) {
+			    // Pick a remaining element...
+			    randomIndex = Math.floor(Math.random() * currentIndex);
+			    currentIndex -= 1;
+			    // And swap it with the current element.
+			    temporaryValue = array[currentIndex];
+			    array[currentIndex] = array[randomIndex];
+			    array[randomIndex] = temporaryValue;
+			  }
+			  return array;
+			}
+			return Setlist
+				// grab setlist from DB and convert to promise
+				.findOne()
+				.exec()
+				.then(function(setlist) {
+					let originalOrder = [];
+					// populate newSetlistOrder with ids from setlist
+					setlist.tracks.forEach(track => {
+						originalOrder.push(track._id);
+					});
+					// scramble array elements
+					newSetlistOrder = scrambleArray(originalOrder);
+					// make put request and return response
+					return chai.request(app)
+						.put(`/setlist`)
+						.send({trackIds: newSetlistOrder});
+				})
+				.then(function(res) {
+					res.should.have.status(204);
+					// find and return setlist
+					return Setlist.findOne().exec();
+				})
+				.then(function(setlist) {
+					// check that the returned setlist order matches the 
+					// order stored in newSetlistOrder
+					setlist.tracks.should.equal.newSetlistOrder;
+				});
+		});
+	});
+
 	describe('DELETE requests to /track/:id', function() {
 		it('should delete the specified track', function() {
 			// declare variable here so that it is accessible in all of the functions below

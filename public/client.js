@@ -1,78 +1,57 @@
 var SetList = {};
 
-
-// Drag-n-Drop functionality
-// SetList.dragSource = {};
-
-// SetList.isbefore = function(a, b) {
-//     if (a.parentNode == b.parentNode) {
-//         for (var cur = a; cur; cur = cur.previousSibling) {
-//             if (cur === b) { 
-//                 return true;
-//             }
-//         }
-//     }
-//     return false;
-// };
-
-// SetList.dragenter = function(e) {
-//     if (SetList.isbefore(dragSource, e.target)) {
-//         e.target.parentNode.insertBefore(dragSource, e.target);
-//     }
-//     else {
-//         e.target.parentNode.insertBefore(dragSource, e.target.nextSibling);
-//     }
-// };
-
-// SetList.dragstart = function(e) {
-//     dragSource = e.target;
-//     e.dataTransfer.effectAllowed = 'move';
-// };
-
-
-
-// functions to set state with API data
-
-// save setlist to sessionStorage so that other functions can access it
-// function saveToSessionStorage(data) {	
-// 	sessionStorage.setlist = JSON.stringify(data);
-// }
-
 // api calls
 
 // get existing setlist
-SetList.getSetlist = function(callbackFn) {
+SetList.getSetlist = function() {
 	$.get('/setlist', function(data) {
-		callbackFn(data.tracks);
-		// saveToSessionStorage(data);
+		SetList.renderTracks(data.tracks);
 	});
 };
 
-// post new setlist
-SetList.postNewTrack = function(newTrack) {
+// post new track
+SetList.addTrack = function(newTrack) {
 	$.ajax({
 	  type: "POST",
 	  url: '/track',
-	  data: {track: newTrack},
-	  success: console.log('setlist posted'),
+	  data: JSON.stringify({track: newTrack}),
+	  // grab the ._id of the added track from DB response and 
+	  // add add it as a 'data-id' property 
+	  // to the corresponding DOM element
+	  success: function(data) {
+	  	var newTrackId = data.tracks[data.tracks.length-1]._id;
+	  	$('.track').last().attr('data-id', newTrackId);
+	  },
 	  contentType: 'application/json',
 	  dataType: 'json'
 	});
 };
 
-// edit existing setlist
+// edit existing track
 SetList.editTrack = function(trackId, trackData) {
 		$.ajax({
 	  type: "PUT",
 	  url: '/track/' + trackId, 
 	  data: JSON.stringify({track: trackData}),
+	  success: console.log('track edited'),
+	  contentType: 'application/json',
+	  dataType: 'json'
+	});
+};
+
+// edit setlist order
+SetList.editSetlist = function(idArray) {
+		$.ajax({
+	  type: "PUT",
+	  url: '/setlist', 
+	  data: JSON.stringify({trackIds: idArray}),
 	  success: console.log('setlist edited'),
 	  contentType: 'application/json',
 	  dataType: 'json'
 	});
 };
 
-// delete existing setlist
+// delete existing track
 SetList.deleteTrack = function(trackId) {
 		$.ajax({
 	  type: "DELETE",
@@ -81,11 +60,13 @@ SetList.deleteTrack = function(trackId) {
 	});
 };
 
-// rendering functions
+// rendering function
 SetList.renderTracks = function(tracks) {
-	if (!tracks) {
+	if (tracks.length === 0) {
 		// display instructions if no setlist has been created
-		$('.setlist').html('<p class="noSetlistMessage">Add a track above to get started!</p>');
+		$('.setlist').html('<div class="track-item-container">' +
+					'<p class="no-track"><strong><span class=".no-setlist-message">Add a track above to get started!</span></strong></p>' + 
+				'</div>');
 	} else {
 		// display setlist if it has been created
 		var setlistHtml = [];
@@ -102,10 +83,10 @@ SetList.renderTracks = function(tracks) {
 	}
 };
 
-// function
-
 // event listeners
 SetList.watchAddTrack = function() {
+	// handle the instructions that display if no tracks are in DB
+	if ($('.setlist').child)
 	$('form').on('submit', function(event) {
 		event.preventDefault();
 		// grab data from form and construct songObject
@@ -117,10 +98,10 @@ SetList.watchAddTrack = function() {
 				bpm: form.find('#tempo').val()
 			}]
 		};
+		// send data to DB
+		SetList.addTrack(song.tracks[0]);
 		// render data on page
 		SetList.renderTracks(song.tracks);
-		// send data to DB
-		SetList.postNewTrack(song.tracks[0]);
 		// reset UI
 		$('input').val('');
 	});
@@ -134,37 +115,53 @@ SetList.watchUpdateTrack = function() {
 	});
 	// update on DB
 	// declare variable outside of event handler so it doesn't get overwritten
-	var timer1;
+	var updateTimer;
 	$(document).on('input', 'span', function(event) {
 		// avoid JS this nonsense
 		var that = $(this);
 		var trackId = that.parents('p').attr('data-id');
 		// cancel any previous setTimeout functions that may be pending.
-		clearTimeout(timer1);
-		timer1 = setTimeout(function() {
-			var updateData = {
+		clearTimeout(updateTimer);
+		// more descriptive variable name
+		updateTimer = setTimeout(function() {
+			var trackData = {
 				trackName: that.parent().find('.trackName').html(),
 				key: that.parent().find('.key').html(),
 				bpm: that.parent().find('.bpm').html(),
 				id: trackId
 			};
-			SetList.editTrack(trackId, updateData);
+			SetList.editTrack(trackId, trackData);
 		}, 2000);
 	});
 };
 
+SetList.watchReorderSetlist = function() {
+	// when a track container dragend event is fired, clear the trackIds array
+	// loop through each .track element and push the id to array
+	// then make api call with id array
+	$(document).on('dragend', '.track-item-container', function() {
+		var trackIds = [];
+		$('.track').each(function() {
+			trackIds.push($(this).attr('data-id'));
+		});
+		SetList.editSetlist(trackIds);
+	});
+};
+
 SetList.watchDeleteTrack = function() {
-	// delete from UI
 	$(document).on('click', '.delete-button', function(event) {
 		var dataId = $(this).siblings('p').attr('data-id');
+		// delete from DB
 		SetList.deleteTrack(dataId);
+		// delete from UI
 		$(this).parent('div').remove();
 	});
 };
 
 $(function() {
-	SetList.getSetlist(SetList.renderTracks);
+	SetList.getSetlist();
 	SetList.watchAddTrack();
 	SetList.watchUpdateTrack();
+	SetList.watchReorderSetlist();
 	SetList.watchDeleteTrack();
 });
